@@ -52,14 +52,15 @@ const MODULE_META: Record<
 };
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default function ModulePage({ params }: PageProps) {
-  const module = MODULES.find((m) => m.slug === params.slug);
+export default async function ModulePage({ params }: PageProps) {
+  const { slug } = await params;
+  const module = MODULES.find((m) => m.slug === slug);
   if (!module) notFound();
 
-  const meta = MODULE_META[params.slug];
+  const meta = MODULE_META[slug];
 
   return (
     <div className="flex flex-col-reverse md:flex-row gap-6 md:gap-8 p-4 md:p-8 min-h-screen">
@@ -78,15 +79,15 @@ export default function ModulePage({ params }: PageProps) {
 
         {/* Module content */}
         <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4 md:p-6">
-          {params.slug === "product-brief" && <ProductBriefForm />}
-          {params.slug === "audience-discovery" && <AudienceDiscoveryForm />}
-          {params.slug === "keyword-intelligence" && <KeywordIntelligenceForm />}
-          {params.slug === "ad-generator" && <AdGeneratorForm />}
-          {params.slug === "post-generator" && <PostGeneratorForm />}
-          {params.slug === "content-generator" && <ContentGeneratorForm />}
-          {params.slug === "team-briefing" && <TeamBriefingForm />}
+          {slug === "product-brief" && <ProductBriefForm />}
+          {slug === "audience-discovery" && <AudienceDiscoveryForm />}
+          {slug === "keyword-intelligence" && <KeywordIntelligenceForm />}
+          {slug === "ad-generator" && <AdGeneratorForm />}
+          {slug === "post-generator" && <PostGeneratorForm />}
+          {slug === "content-generator" && <ContentGeneratorForm />}
+          {slug === "team-briefing" && <TeamBriefingForm />}
 
-          {!["product-brief","audience-discovery","keyword-intelligence","ad-generator","post-generator","content-generator","team-briefing"].includes(params.slug) && (
+          {!["product-brief","audience-discovery","keyword-intelligence","ad-generator","post-generator","content-generator","team-briefing"].includes(slug) && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <div className="p-4 rounded-2xl bg-slate-800/60 mb-4">
                 <Package className="w-8 h-8 text-slate-500" />
@@ -108,7 +109,7 @@ export default function ModulePage({ params }: PageProps) {
           what={meta.what}
           how={meta.how}
           next={meta.next}
-          extra={params.slug === "keyword-intelligence" ? <KeywordTip /> : undefined}
+          extra={slug === "keyword-intelligence" ? <KeywordTip /> : undefined}
           className="md:self-start md:sticky md:top-8 md:w-72 w-full"
         />
       )}
