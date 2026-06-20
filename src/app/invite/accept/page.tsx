@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { acceptInvite } from "@/lib/supabase/collaborators";
 import { createClient } from "@/lib/supabase/client";
 import { Orbit, Check, AlertCircle } from "lucide-react";
 
-export default function AcceptInvitePage() {
+function AcceptInviteContent() {
   const router = useRouter();
   const params = useSearchParams();
   const inviteId = params.get("id");
@@ -20,7 +20,6 @@ export default function AcceptInvitePage() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        // Store invite ID and redirect to login
         sessionStorage.setItem("pending_invite", inviteId!);
         setStatus("login");
         setTimeout(() => router.push("/login"), 2000);
@@ -80,5 +79,13 @@ export default function AcceptInvitePage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AcceptInvitePage() {
+  return (
+    <Suspense>
+      <AcceptInviteContent />
+    </Suspense>
   );
 }
