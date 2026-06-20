@@ -51,11 +51,7 @@ const MODULE_META: Record<
   },
 };
 
-interface PageProps {
-  params: Promise<{ slug: string }>;
-}
-
-export default async function ModulePage({ params }: PageProps) {
+export default async function ModulePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const module = MODULES.find((m) => m.slug === slug);
   if (!module) notFound();
