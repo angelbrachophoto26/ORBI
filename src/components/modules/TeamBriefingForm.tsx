@@ -34,24 +34,24 @@ function Section({ icon, title, color, children }: {
   return (
     <div className="rounded-xl border border-orbi-border bg-orbi-surface/60 overflow-hidden">
       <button
-        className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-orbi-card/30 transition-colors"
+        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-orbi-card/30 transition-colors"
         onClick={() => setOpen(v => !v)}
       >
         <div className={`p-1.5 rounded-lg ${color}`}>{icon}</div>
         <span className="flex-1 text-sm font-semibold text-foreground">{title}</span>
         {open ? <ChevronUp className="w-4 h-4 text-orbi-muted" /> : <ChevronDown className="w-4 h-4 text-orbi-muted" />}
       </button>
-      {open && <div className="px-5 pb-5 border-t border-orbi-border/60 pt-4">{children}</div>}
+      {open && <div className="px-4 pb-4 border-t border-orbi-border/60 pt-3">{children}</div>}
     </div>
   );
 }
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex gap-3 py-2 border-b border-orbi-border/50 last:border-0">
-      <span className="text-xs text-orbi-muted w-32 shrink-0 pt-0.5">{label}</span>
-      <div className="flex-1 flex items-start gap-2">
-        <span className="text-sm text-foreground/80 leading-relaxed flex-1">{value}</span>
+    <div className="flex flex-col gap-0.5 py-2.5 border-b border-orbi-border/50 last:border-0">
+      <span className="text-[11px] font-medium text-orbi-muted uppercase tracking-wide">{label}</span>
+      <div className="flex items-start gap-2">
+        <span className="text-sm text-foreground leading-relaxed flex-1">{value}</span>
         <CopyButton text={value} />
       </div>
     </div>
@@ -188,15 +188,13 @@ export default function TeamBriefingForm() {
   return (
     <div className="flex flex-col gap-5">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-sm text-orbi-muted leading-relaxed">
-            Resumen completo de tu estrategia de marketing. Compártelo con tu equipo o socio copiando el documento en Markdown.
-          </p>
-        </div>
+      <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+        <p className="text-sm text-orbi-muted leading-relaxed flex-1">
+          Resumen completo de tu estrategia de marketing. Compártelo con tu equipo copiando el documento en Markdown.
+        </p>
         <button
           onClick={() => project && navigator.clipboard.writeText(buildMarkdown(project))}
-          className="shrink-0 flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-orbi-border-light text-foreground/80 hover:border-slate-500 hover:text-foreground transition-colors"
+          className="self-start shrink-0 flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-orbi-border-light text-foreground/80 hover:border-orbi-primary hover:text-foreground transition-colors"
         >
           <Download className="w-3.5 h-3.5" /> Copiar Markdown
         </button>

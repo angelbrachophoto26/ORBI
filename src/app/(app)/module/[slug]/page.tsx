@@ -59,7 +59,7 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
   const meta = MODULE_META[slug];
 
   return (
-    <div className="flex flex-col-reverse md:flex-row gap-6 md:gap-8 p-4 md:p-8 min-h-screen">
+    <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-8 p-3 md:p-8 min-h-screen">
       {/* Main content */}
       <div className="flex-1 min-w-0">
         {/* Header */}
@@ -74,7 +74,7 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
         </div>
 
         {/* Module content */}
-        <div className="bg-white/80 border border-orbi-border rounded-xl p-4 md:p-6">
+        <div className="bg-white/80 border border-orbi-border rounded-xl p-3 md:p-6">
           {slug === "product-brief" && <ProductBriefForm />}
           {slug === "audience-discovery" && <AudienceDiscoveryForm />}
           {slug === "keyword-intelligence" && <KeywordIntelligenceForm />}
