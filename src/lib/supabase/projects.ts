@@ -59,7 +59,14 @@ export async function fetchProjects(): Promise<OrbiProject[]> {
     .select("*")
     .order("updated_at", { ascending: false });
   if (error) throw error;
-  return (data ?? []).map(rowToProject);
+  // Deduplicate by ID in case of migration race conditions
+  const rows = data ?? [];
+  const seen = new Set<string>();
+  return rows.filter(r => {
+    if (seen.has(r.id)) return false;
+    seen.add(r.id);
+    return true;
+  }).map(rowToProject);
 }
 
 export async function createProject(): Promise<OrbiProject> {
@@ -166,8 +173,14 @@ export async function migrateFromLocalStorage(): Promise<void> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user || local.length === 0) return;
 
+  // Fetch existing IDs to avoid duplicates
+  const { data: existing } = await supabase.from("projects").select("id").eq("user_id", user.id);
+  const existingIds = new Set((existing ?? []).map((r: { id: string }) => r.id));
+
   for (const project of local) {
+    if (existingIds.has(project.id)) continue; // already migrated
     const row: Record<string, unknown> = {
+      id: project.id,
       user_id: user.id,
       completed_modules: project.completedModules,
       last_module: project.lastModule,

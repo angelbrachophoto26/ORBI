@@ -88,8 +88,8 @@ function Logo() {
         src="/logo-completo.png"
         alt="Orbi by Life26"
         width={180}
-        height={60}
-        className="w-full max-w-[160px] md:max-w-[180px] h-auto object-contain"
+        height={40}
+        className="h-8 w-auto max-w-[140px] md:max-w-[170px] object-contain"
         priority
       />
     </Link>
@@ -129,7 +129,7 @@ export default function Sidebar() {
       </aside>
 
       {/* ── Mobile top bar ──────────────────────────────────── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 bg-orbi-bg border-b border-orbi-border">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 h-14 flex items-center justify-between px-4 bg-orbi-bg border-b border-orbi-border">
         <Logo />
         <button
           onClick={() => setOpen(true)}
@@ -156,7 +156,7 @@ export default function Sidebar() {
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-orbi-border">
+        <div className="flex items-center justify-between px-5 h-14 border-b border-orbi-border">
           <Logo />
           <button
             onClick={() => setOpen(false)}
