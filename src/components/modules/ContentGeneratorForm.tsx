@@ -131,8 +131,13 @@ export default function ContentGeneratorForm() {
         }),
       });
       const data = await res.json();
-      if (data.article) setArticle(data.article);
-      else setError(data.error ?? "No se pudo generar el artículo.");
+      if (data.article) {
+        setArticle(data.article);
+        // Auto-cache: persist immediately so re-entry skips generation
+        setActiveProject({ ...project, article: data.article });
+      } else {
+        setError(data.error ?? "No se pudo generar el artículo.");
+      }
     } catch { setError("Error de red."); }
     finally { setGenerating(false); }
   }

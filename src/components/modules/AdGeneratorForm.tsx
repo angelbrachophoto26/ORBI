@@ -258,8 +258,14 @@ export default function AdGeneratorForm() {
         }),
       });
       const data = await res.json();
-      if (data.ads) setAds(data.ads);
-      else setError(data.error ?? "No se pudieron generar los anuncios.");
+      if (data.ads) {
+        setAds(data.ads);
+        // Auto-cache: persist immediately so re-entry skips generation
+        const merged = [...(project.ads ?? []).filter(a => a.platform !== p), ...data.ads];
+        setActiveProject({ ...project, ads: merged });
+      } else {
+        setError(data.error ?? "No se pudieron generar los anuncios.");
+      }
     } catch {
       setError("Error de red al generar anuncios.");
     } finally {

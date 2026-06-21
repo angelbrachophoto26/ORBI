@@ -247,6 +247,7 @@ export default function AudienceDiscoveryForm() {
       .then((data) => {
         if (data.personas) {
           setPersonas(data.personas);
+          setActiveProject({ ...project, audiences: data.personas });
         } else {
           setError(data.error ?? "No se pudieron generar las audiencias.");
         }

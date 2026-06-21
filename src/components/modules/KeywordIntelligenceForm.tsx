@@ -187,8 +187,10 @@ export default function KeywordIntelligenceForm() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.clusters) setClusters(data.clusters);
-        else setError("No se pudieron generar las keywords.");
+        if (data.clusters) {
+          setClusters(data.clusters);
+          setActiveProject({ ...project, keywords: data.clusters });
+        } else setError("No se pudieron generar las keywords.");
       })
       .catch(() => setError("Error de red al generar keywords."))
       .finally(() => setGenerating(false));

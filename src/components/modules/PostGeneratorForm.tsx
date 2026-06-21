@@ -220,8 +220,14 @@ export default function PostGeneratorForm() {
         body: JSON.stringify({ brief: project.productBrief, audiences: selectedAudiences, keywords: selectedKeywords, platform: p }),
       });
       const data = await res.json();
-      if (data.posts) setPosts(data.posts);
-      else setError(data.error ?? "No se pudieron generar los posts.");
+      if (data.posts) {
+        setPosts(data.posts);
+        // Auto-cache: persist immediately so re-entry skips generation
+        const merged = [...(project.posts ?? []).filter(p2 => p2.platform !== p), ...data.posts];
+        setActiveProject({ ...project, posts: merged });
+      } else {
+        setError(data.error ?? "No se pudieron generar los posts.");
+      }
     } catch { setError("Error de red."); }
     finally { setGenerating(false); }
   }
