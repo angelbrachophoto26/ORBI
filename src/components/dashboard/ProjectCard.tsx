@@ -65,8 +65,8 @@ export default function ProjectCard({ project, onDelete, onInvite, isShared }: P
     <div
       onClick={handleOpen}
       className={cn(
-        "group relative flex flex-col bg-slate-900 border border-slate-800 rounded-xl p-5 cursor-pointer",
-        "hover:border-emerald-600/50 hover:bg-slate-900/80 transition-all duration-200",
+        "group relative flex flex-col bg-orbi-surface border border-orbi-border rounded-xl p-5 cursor-pointer",
+        "hover:border-orbi-accent/50 hover:bg-orbi-surface/80 transition-all duration-200",
         "hover:shadow-lg hover:shadow-emerald-900/20"
       )}
     >
@@ -75,7 +75,7 @@ export default function ProjectCard({ project, onDelete, onInvite, isShared }: P
         {!isShared && onInvite && (
           <button
             onClick={(e) => { e.stopPropagation(); onInvite(project.id, project.productBrief?.productName ?? "Proyecto"); }}
-            className="p-1.5 rounded-lg text-slate-600 hover:text-emerald-400 hover:bg-emerald-400/10 transition-all"
+            className="p-1.5 rounded-lg text-orbi-secondary hover:text-orbi-accent hover:bg-orbi-primary/10 transition-all"
             title="Invitar colaborador"
           >
             <UserPlus className="w-3.5 h-3.5" />
@@ -84,7 +84,7 @@ export default function ProjectCard({ project, onDelete, onInvite, isShared }: P
         {!isShared && (
           <button
             onClick={handleDelete}
-            className="p-1.5 rounded-lg text-slate-600 hover:text-red-400 hover:bg-red-400/10 transition-all"
+            className="p-1.5 rounded-lg text-orbi-secondary hover:text-red-400 hover:bg-red-400/10 transition-all"
             title="Eliminar proyecto"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -100,17 +100,17 @@ export default function ProjectCard({ project, onDelete, onInvite, isShared }: P
 
       {/* Header */}
       <div className="mb-4 pr-6">
-        <h3 className="text-base font-semibold text-white truncate group-hover:text-emerald-300 transition-colors">
+        <h3 className="text-base font-semibold text-white truncate group-hover:text-orbi-accent transition-colors">
           {project.productBrief?.productName ?? "Sin nombre"}
         </h3>
         <div className="flex items-center gap-3 mt-1.5">
           {category && (
-            <span className="flex items-center gap-1 text-xs text-slate-500">
+            <span className="flex items-center gap-1 text-xs text-orbi-muted">
               <Tag className="w-3 h-3" />
               {category}
             </span>
           )}
-          <span className="flex items-center gap-1 text-xs text-slate-500">
+          <span className="flex items-center gap-1 text-xs text-orbi-muted">
             <Calendar className="w-3 h-3" />
             {createdAt}
           </span>
@@ -120,12 +120,12 @@ export default function ProjectCard({ project, onDelete, onInvite, isShared }: P
       {/* Progress bar */}
       <div className="mb-3">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs text-slate-500">Progreso</span>
-          <span className="text-xs font-semibold text-emerald-400">
+          <span className="text-xs text-orbi-muted">Progreso</span>
+          <span className="text-xs font-semibold text-orbi-accent">
             {completed}/{total} módulos
           </span>
         </div>
-        <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-orbi-card rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
@@ -141,7 +141,7 @@ export default function ProjectCard({ project, onDelete, onInvite, isShared }: P
           return (
             <div key={mod.id} title={mod.title}>
               {done ? (
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-orbi-accent" />
               ) : isCurrent ? (
                 <Circle className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500/20" />
               ) : (
@@ -154,14 +154,14 @@ export default function ProjectCard({ project, onDelete, onInvite, isShared }: P
 
       {/* Footer CTA */}
       <div className="mt-auto flex items-center justify-between">
-        <span className="text-xs text-slate-500">
+        <span className="text-xs text-orbi-muted">
           {completed === 0
             ? "Sin empezar"
             : completed === total
             ? "Completado"
             : `En módulo ${completed + 1} de ${total}`}
         </span>
-        <span className="flex items-center gap-1 text-xs font-medium text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="flex items-center gap-1 text-xs font-medium text-orbi-accent opacity-0 group-hover:opacity-100 transition-opacity">
           Abrir <ArrowRight className="w-3 h-3" />
         </span>
       </div>

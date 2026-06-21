@@ -21,8 +21,8 @@ function CopyButton({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 1500);
   }
   return (
-    <button onClick={handleCopy} className="p-1 rounded text-slate-500 hover:text-slate-300 hover:bg-slate-700 transition-colors" title="Copiar">
-      {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+    <button onClick={handleCopy} className="p-1 rounded text-orbi-muted hover:text-slate-300 hover:bg-orbi-primary transition-colors" title="Copiar">
+      {copied ? <Check className="w-3.5 h-3.5 text-orbi-accent" /> : <Copy className="w-3.5 h-3.5" />}
     </button>
   );
 }
@@ -32,24 +32,24 @@ function Section({ icon, title, color, children }: {
 }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900/60 overflow-hidden">
+    <div className="rounded-xl border border-orbi-border bg-orbi-surface/60 overflow-hidden">
       <button
-        className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-slate-800/30 transition-colors"
+        className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-orbi-card/30 transition-colors"
         onClick={() => setOpen(v => !v)}
       >
         <div className={`p-1.5 rounded-lg ${color}`}>{icon}</div>
         <span className="flex-1 text-sm font-semibold text-white">{title}</span>
-        {open ? <ChevronUp className="w-4 h-4 text-slate-500" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
+        {open ? <ChevronUp className="w-4 h-4 text-orbi-muted" /> : <ChevronDown className="w-4 h-4 text-orbi-muted" />}
       </button>
-      {open && <div className="px-5 pb-5 border-t border-slate-800/60 pt-4">{children}</div>}
+      {open && <div className="px-5 pb-5 border-t border-orbi-border/60 pt-4">{children}</div>}
     </div>
   );
 }
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex gap-3 py-2 border-b border-slate-800/50 last:border-0">
-      <span className="text-xs text-slate-500 w-32 shrink-0 pt-0.5">{label}</span>
+    <div className="flex gap-3 py-2 border-b border-orbi-border/50 last:border-0">
+      <span className="text-xs text-orbi-muted w-32 shrink-0 pt-0.5">{label}</span>
       <div className="flex-1 flex items-start gap-2">
         <span className="text-sm text-slate-300 leading-relaxed flex-1">{value}</span>
         <CopyButton text={value} />
@@ -169,8 +169,8 @@ export default function TeamBriefingForm() {
   if (projectLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4">
-        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
-        <p className="text-slate-400 text-sm">Cargando estrategia…</p>
+        <Loader2 className="w-8 h-8 text-orbi-accent animate-spin" />
+        <p className="text-orbi-muted text-sm">Cargando estrategia…</p>
       </div>
     );
   }
@@ -190,13 +190,13 @@ export default function TeamBriefingForm() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <p className="text-sm text-orbi-muted leading-relaxed">
             Resumen completo de tu estrategia de marketing. Compártelo con tu equipo o socio copiando el documento en Markdown.
           </p>
         </div>
         <button
           onClick={() => project && navigator.clipboard.writeText(buildMarkdown(project))}
-          className="shrink-0 flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
+          className="shrink-0 flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-orbi-border-light text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
         >
           <Download className="w-3.5 h-3.5" /> Copiar Markdown
         </button>
@@ -204,7 +204,7 @@ export default function TeamBriefingForm() {
 
       {/* 1. Producto */}
       {b && (
-        <Section icon={<Target className="w-4 h-4 text-emerald-400" />} title="Producto" color="bg-emerald-950/40">
+        <Section icon={<Target className="w-4 h-4 text-orbi-accent" />} title="Producto" color="bg-emerald-950/40">
           <Row label="Nombre" value={b.productName} />
           <Row label="Categoría" value={b.category} />
           <Row label="Problema" value={b.targetProblem} />
@@ -219,7 +219,7 @@ export default function TeamBriefingForm() {
         <Section icon={<Users className="w-4 h-4 text-blue-400" />} title={`Audiencias (${audiences.length})`} color="bg-blue-950/40">
           <div className="space-y-5">
             {audiences.map((a, i) => (
-              <div key={a.id} className={i > 0 ? "pt-5 border-t border-slate-800" : ""}>
+              <div key={a.id} className={i > 0 ? "pt-5 border-t border-orbi-border" : ""}>
                 <p className="text-sm font-semibold text-white mb-2">{a.name}</p>
                 <Row label="Rol" value={a.role} />
                 <Row label="JTBD" value={a.jtbd} />
@@ -237,14 +237,14 @@ export default function TeamBriefingForm() {
         <Section icon={<Search className="w-4 h-4 text-yellow-400" />} title={`Keywords (${keywords.length})`} color="bg-yellow-950/40">
           <div className="flex flex-wrap gap-2">
             {keywords.map((kw, i) => (
-              <span key={i} className="text-xs bg-slate-800 text-slate-300 border border-slate-700 rounded-full px-2.5 py-1">
+              <span key={i} className="text-xs bg-orbi-card text-slate-300 border border-orbi-border-light rounded-full px-2.5 py-1">
                 {kw}
               </span>
             ))}
           </div>
           <button
             onClick={() => navigator.clipboard.writeText(keywords.join("\n"))}
-            className="mt-3 flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors"
+            className="mt-3 flex items-center gap-1.5 text-xs text-orbi-muted hover:text-slate-300 transition-colors"
           >
             <Copy className="w-3.5 h-3.5" /> Copiar todas
           </button>
@@ -256,17 +256,17 @@ export default function TeamBriefingForm() {
         <Section icon={<Megaphone className="w-4 h-4 text-purple-400" />} title={`Anuncios seleccionados (${selectedAds.length})`} color="bg-purple-950/40">
           <div className="space-y-4">
             {selectedAds.map(ad => (
-              <div key={ad.id} className="rounded-lg border border-slate-800 p-3 space-y-2">
+              <div key={ad.id} className="rounded-lg border border-orbi-border p-3 space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-semibold text-white">{ad.angleLabel}</span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">{ad.platform === "google" ? "Google Ads" : "Meta Ads"}</span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-orbi-card text-orbi-muted">{ad.platform === "google" ? "Google Ads" : "Meta Ads"}</span>
                 </div>
                 {ad.headlines && (
                   <div>
-                    <p className="text-[10px] text-slate-600 mb-1">Headlines</p>
+                    <p className="text-[10px] text-orbi-secondary mb-1">Headlines</p>
                     {ad.headlines.map((h, i) => (
                       <div key={i} className="flex items-center gap-2 py-0.5">
-                        <span className="text-xs text-slate-400 flex-1">{h}</span>
+                        <span className="text-xs text-orbi-muted flex-1">{h}</span>
                         <CopyButton text={h} />
                       </div>
                     ))}
@@ -274,9 +274,9 @@ export default function TeamBriefingForm() {
                 )}
                 {ad.primaryText && (
                   <div>
-                    <p className="text-[10px] text-slate-600 mb-1">Primary Text</p>
+                    <p className="text-[10px] text-orbi-secondary mb-1">Primary Text</p>
                     <div className="flex items-start gap-2">
-                      <span className="text-xs text-slate-400 flex-1 leading-relaxed">{ad.primaryText}</span>
+                      <span className="text-xs text-orbi-muted flex-1 leading-relaxed">{ad.primaryText}</span>
                       <CopyButton text={ad.primaryText} />
                     </div>
                   </div>
@@ -292,13 +292,13 @@ export default function TeamBriefingForm() {
         <Section icon={<FileText className="w-4 h-4 text-pink-400" />} title={`Posts seleccionados (${selectedPosts.length})`} color="bg-pink-950/40">
           <div className="space-y-4">
             {selectedPosts.map(post => (
-              <div key={post.id} className="rounded-lg border border-slate-800 p-3 space-y-2">
+              <div key={post.id} className="rounded-lg border border-orbi-border p-3 space-y-2">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-semibold text-white">{post.pillarLabel}</span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 capitalize">{post.platform} · {post.format}</span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-orbi-card text-orbi-muted capitalize">{post.platform} · {post.format}</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <p className="text-xs text-slate-300 flex-1 leading-relaxed"><strong className="text-slate-400">Hook:</strong> {post.hook}</p>
+                  <p className="text-xs text-slate-300 flex-1 leading-relaxed"><strong className="text-orbi-muted">Hook:</strong> {post.hook}</p>
                   <CopyButton text={`${post.hook}\n\n${post.body}\n\n${post.cta}`} />
                 </div>
               </div>
@@ -315,11 +315,11 @@ export default function TeamBriefingForm() {
           <Row label="URL" value={`/${article.slug}`} />
           <Row label="Keyword" value={article.targetKeyword} />
           <Row label="Lectura" value={`${article.readingTime} min`} />
-          <div className="mt-3 pt-3 border-t border-slate-800">
-            <p className="text-[10px] text-slate-500 mb-2 uppercase tracking-wider">Secciones</p>
+          <div className="mt-3 pt-3 border-t border-orbi-border">
+            <p className="text-[10px] text-orbi-muted mb-2 uppercase tracking-wider">Secciones</p>
             <div className="flex flex-wrap gap-2">
               {article.sections.map(s => (
-                <span key={s.id} className="text-[11px] bg-slate-800 text-slate-400 border border-slate-700 rounded px-2 py-0.5">
+                <span key={s.id} className="text-[11px] bg-orbi-card text-orbi-muted border border-orbi-border-light rounded px-2 py-0.5">
                   H{s.level} {s.heading}
                 </span>
               ))}
@@ -332,14 +332,14 @@ export default function TeamBriefingForm() {
       {done && (
         <div className="rounded-xl border border-emerald-700/40 bg-emerald-950/20 p-5 text-center">
           <p className="text-2xl mb-2">🎉</p>
-          <p className="text-emerald-300 font-semibold text-sm">¡Estrategia completa!</p>
-          <p className="text-slate-400 text-xs mt-1">Has completado los 7 módulos de Orbi. Tu estrategia de marketing está lista.</p>
+          <p className="text-orbi-accent font-semibold text-sm">¡Estrategia completa!</p>
+          <p className="text-orbi-muted text-xs mt-1">Has completado los 7 módulos de Orbi. Tu estrategia de marketing está lista.</p>
         </div>
       )}
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-2 border-t border-slate-800">
-        <p className="text-sm text-slate-500">
+      <div className="flex items-center justify-between pt-2 border-t border-orbi-border">
+        <p className="text-sm text-orbi-muted">
           {done ? "Estrategia guardada ✓" : "Revisa el resumen y finaliza tu estrategia"}
         </p>
         {!done ? (

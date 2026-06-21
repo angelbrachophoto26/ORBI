@@ -20,14 +20,14 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={id}
           className={cn(
-            "w-full px-3 py-2.5 bg-slate-800/60 border border-slate-700 rounded-lg text-white placeholder:text-slate-500 text-sm resize-none",
-            "focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-200",
+            "w-full px-3 py-2.5 bg-orbi-card/60 border border-orbi-border-light rounded-lg text-white placeholder:text-orbi-muted text-sm resize-none",
+            "focus:outline-none focus:ring-2 focus:ring-orbi-accent/50 focus:border-orbi-accent transition-all duration-200",
             error && "border-red-500 focus:ring-red-500/50",
             className
           )}
           {...props}
         />
-        {hint && !error && <p className="text-xs text-slate-500">{hint}</p>}
+        {hint && !error && <p className="text-xs text-orbi-muted">{hint}</p>}
         {error && <p className="text-xs text-red-400">{error}</p>}
       </div>
     );

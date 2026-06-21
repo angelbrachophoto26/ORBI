@@ -43,21 +43,21 @@ const INTENT_META = {
     label: "Transaccional",
     desc: "El usuario está listo para actuar. Ideal para ads, precios y CTAs directos.",
     icon: ShoppingCart,
-    color: "text-emerald-400",
+    color: "text-orbi-accent",
     bg: "bg-emerald-950/20",
     border: "border-emerald-900/30",
-    pill: "bg-emerald-950/40 text-emerald-300 border border-emerald-900/40",
+    pill: "bg-emerald-950/40 text-orbi-accent border border-emerald-900/40",
   },
 };
 
 const VOLUME_COLORS = {
-  alta: "text-emerald-400",
+  alta: "text-orbi-accent",
   media: "text-yellow-400",
-  baja: "text-slate-500",
+  baja: "text-orbi-muted",
 };
 
 const DIFFICULTY_COLORS = {
-  baja: "text-emerald-400",
+  baja: "text-orbi-accent",
   media: "text-yellow-400",
   alta: "text-rose-400",
 };
@@ -75,14 +75,14 @@ function KeywordRow({
       onClick={onToggle}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-all ${
         kw.selected
-          ? "bg-slate-800 border border-slate-600"
-          : "hover:bg-slate-800/50 border border-transparent"
+          ? "bg-orbi-card border border-slate-600"
+          : "hover:bg-orbi-card/50 border border-transparent"
       }`}
     >
       {/* Checkbox */}
       <div
         className={`shrink-0 w-4 h-4 rounded border flex items-center justify-center transition-all ${
-          kw.selected ? "border-emerald-500 bg-emerald-500" : "border-slate-600"
+          kw.selected ? "border-orbi-accent bg-orbi-primary" : "border-slate-600"
         }`}
       >
         {kw.selected && <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />}
@@ -123,25 +123,25 @@ function ClusterSection({
   return (
     <div className={`rounded-xl border ${meta.border} ${meta.bg} overflow-hidden`}>
       {/* Header */}
-      <div className="px-4 py-3 border-b border-slate-800/60">
+      <div className="px-4 py-3 border-b border-orbi-border/60">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Icon className={`w-4 h-4 ${meta.color}`} />
             <span className={`text-sm font-semibold ${meta.color}`}>{cluster.name}</span>
           </div>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-orbi-muted">
             {selectedCount}/{cluster.keywords.length} seleccionadas
           </span>
         </div>
-        <p className="text-xs text-slate-500 mt-1">{meta.desc}</p>
+        <p className="text-xs text-orbi-muted mt-1">{meta.desc}</p>
       </div>
 
       {/* Column headers */}
       <div className="hidden sm:flex items-center gap-3 px-3 pt-2 pb-1">
         <div className="w-4 shrink-0" />
-        <span className="flex-1 text-[10px] text-slate-600 uppercase tracking-widest">Keyword</span>
-        <span className="w-16 text-right text-[10px] text-slate-600 uppercase tracking-widest">Volumen</span>
-        <span className="w-12 text-right text-[10px] text-slate-600 uppercase tracking-widest">Dificult.</span>
+        <span className="flex-1 text-[10px] text-orbi-secondary uppercase tracking-widest">Keyword</span>
+        <span className="w-16 text-right text-[10px] text-orbi-secondary uppercase tracking-widest">Volumen</span>
+        <span className="w-12 text-right text-[10px] text-orbi-secondary uppercase tracking-widest">Dificult.</span>
       </div>
 
       {/* Keywords */}
@@ -246,16 +246,16 @@ export default function KeywordIntelligenceForm() {
         <div className="relative">
           <Search className="w-10 h-10 text-slate-700" />
           <div className="absolute -top-1 -right-1">
-            <Loader2 className="w-5 h-5 text-emerald-500 animate-spin" />
+            <Loader2 className="w-5 h-5 text-orbi-accent animate-spin" />
           </div>
         </div>
         <div className="text-center">
           <p className="text-slate-300 font-medium text-sm">Mapeando tu universo de keywords...</p>
-          <p className="text-slate-500 text-xs mt-1">Organizando por intención de búsqueda</p>
+          <p className="text-orbi-muted text-xs mt-1">Organizando por intención de búsqueda</p>
         </div>
         <div className="w-full space-y-3 mt-2">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-40 rounded-xl border border-slate-800 bg-slate-900/40 animate-pulse" />
+            <div key={i} className="h-40 rounded-xl border border-orbi-border bg-orbi-surface/40 animate-pulse" />
           ))}
         </div>
       </div>
@@ -280,19 +280,19 @@ export default function KeywordIntelligenceForm() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Search className="w-4 h-4 text-emerald-500" />
-            <span className="text-xs font-semibold text-emerald-500 uppercase tracking-widest">
+            <Search className="w-4 h-4 text-orbi-accent" />
+            <span className="text-xs font-semibold text-orbi-accent uppercase tracking-widest">
               {clusters.reduce((a, c) => a + c.keywords.length, 0)} keywords generadas
             </span>
           </div>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <p className="text-sm text-orbi-muted leading-relaxed">
             Selecciona las keywords más relevantes para tu estrategia. Están organizadas
             por <strong className="text-white">intención de búsqueda</strong> para que sepas cuándo y dónde usarlas.
           </p>
         </div>
         <div className="shrink-0 text-right">
           <span className="text-2xl font-bold text-white">{totalSelected}</span>
-          <p className="text-[10px] text-slate-600 mt-0.5">seleccionadas</p>
+          <p className="text-[10px] text-orbi-secondary mt-0.5">seleccionadas</p>
         </div>
       </div>
 
@@ -303,10 +303,10 @@ export default function KeywordIntelligenceForm() {
             {meta.label}
           </span>
         ))}
-        <span className="text-[11px] px-2 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+        <span className="text-[11px] px-2 py-1 rounded-full bg-orbi-card text-orbi-muted border border-orbi-border-light">
           Volumen: alta / media / baja
         </span>
-        <span className="text-[11px] px-2 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+        <span className="text-[11px] px-2 py-1 rounded-full bg-orbi-card text-orbi-muted border border-orbi-border-light">
           Dificultad: baja / media / alta
         </span>
       </div>
@@ -319,8 +319,8 @@ export default function KeywordIntelligenceForm() {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-2 border-t border-slate-800">
-        <p className="text-sm text-slate-500">
+      <div className="flex items-center justify-between pt-2 border-t border-orbi-border">
+        <p className="text-sm text-orbi-muted">
           {totalSelected === 0
             ? "Selecciona keywords para continuar"
             : `${totalSelected} keyword${totalSelected !== 1 ? "s" : ""} seleccionada${totalSelected !== 1 ? "s" : ""}`}

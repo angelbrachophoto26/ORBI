@@ -46,23 +46,23 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6">
-      <div className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-2xl p-8">
+    <div className="min-h-screen bg-orbi-bg flex flex-col items-center justify-center p-6">
+      <div className="w-full max-w-sm bg-orbi-surface border border-orbi-border rounded-2xl p-8">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="p-2 rounded-xl bg-emerald-600">
+          <div className="p-2 rounded-xl bg-orbi-primary">
             <Orbit className="w-6 h-6 text-white" />
           </div>
           <div className="text-left">
             <p className="text-xl font-bold text-white tracking-tight">Orbi</p>
-            <p className="text-[11px] text-slate-500 leading-none">by Life26</p>
+            <p className="text-[11px] text-orbi-muted leading-none">by Life26</p>
           </div>
         </div>
 
         <h1 className="text-lg font-semibold text-white mb-1 text-center">
           {mode === "signup" ? "Crear cuenta" : "Bienvenido a Orbi"}
         </h1>
-        <p className="text-sm text-slate-400 mb-6 text-center leading-relaxed">
+        <p className="text-sm text-orbi-muted mb-6 text-center leading-relaxed">
           {mode === "signup" ? "Regístrate con email o Google." : "Entra con tu cuenta para continuar."}
         </p>
 
@@ -82,9 +82,9 @@ export default function LoginPage() {
 
         {/* Divider */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="flex-1 h-px bg-slate-800" />
-          <span className="text-xs text-slate-600">o con email</span>
-          <div className="flex-1 h-px bg-slate-800" />
+          <div className="flex-1 h-px bg-orbi-card" />
+          <span className="text-xs text-orbi-secondary">o con email</span>
+          <div className="flex-1 h-px bg-orbi-card" />
         </div>
 
         {/* Email form */}
@@ -92,13 +92,13 @@ export default function LoginPage() {
           <div className="flex gap-2">
             <button
               onClick={() => setMode("login")}
-              className="flex-1 py-2.5 text-sm font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+              className="flex-1 py-2.5 text-sm font-medium text-slate-300 bg-orbi-card hover:bg-orbi-primary rounded-lg transition-colors"
             >
               Iniciar sesión
             </button>
             <button
               onClick={() => setMode("signup")}
-              className="flex-1 py-2.5 text-sm font-medium text-emerald-300 bg-emerald-900/30 hover:bg-emerald-900/50 border border-emerald-800/40 rounded-lg transition-colors"
+              className="flex-1 py-2.5 text-sm font-medium text-orbi-accent bg-emerald-900/30 hover:bg-emerald-900/50 border border-emerald-800/40 rounded-lg transition-colors"
             >
               Registrarse
             </button>
@@ -111,7 +111,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+              className="w-full px-4 py-3 bg-orbi-card border border-orbi-border-light rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orbi-accent transition-colors"
             />
             <input
               type="password"
@@ -120,16 +120,16 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+              className="w-full px-4 py-3 bg-orbi-card border border-orbi-border-light rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orbi-accent transition-colors"
             />
 
             {error && <p className="text-xs text-rose-400">{error}</p>}
-            {success && <p className="text-xs text-emerald-400">{success}</p>}
+            {success && <p className="text-xs text-orbi-accent">{success}</p>}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors text-sm"
+              className="w-full py-3 bg-orbi-primary hover:bg-orbi-primary disabled:opacity-50 text-white font-semibold rounded-xl transition-colors text-sm"
             >
               {loading ? "Procesando..." : mode === "signup" ? "Crear cuenta" : "Iniciar sesión"}
             </button>
@@ -137,14 +137,14 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => { setMode("google"); setError(null); setSuccess(null); }}
-              className="w-full text-xs text-slate-500 hover:text-slate-400 transition-colors pt-1"
+              className="w-full text-xs text-orbi-muted hover:text-orbi-muted transition-colors pt-1"
             >
               ← Volver
             </button>
           </form>
         )}
 
-        <p className="mt-6 text-xs text-slate-600 text-center">Sin contraseña · Life26 · 2026</p>
+        <p className="mt-6 text-xs text-orbi-secondary text-center">Sin contraseña · Life26 · 2026</p>
       </div>
     </div>
   );

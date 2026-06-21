@@ -39,30 +39,30 @@ function AcceptInviteContent() {
   }, [inviteId, router]);
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center gap-4">
-      <div className="p-2 rounded-xl bg-emerald-600">
+    <div className="min-h-screen bg-orbi-bg flex flex-col items-center justify-center gap-4">
+      <div className="p-2 rounded-xl bg-orbi-primary">
         <Orbit className="w-6 h-6 text-white" />
       </div>
 
       {status === "loading" && (
         <div className="flex flex-col items-center gap-2">
-          <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-slate-400">Aceptando invitación...</p>
+          <div className="w-6 h-6 border-2 border-orbi-accent border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-orbi-muted">Aceptando invitación...</p>
         </div>
       )}
 
       {status === "success" && (
         <div className="flex flex-col items-center gap-2">
-          <Check className="w-8 h-8 text-emerald-500" />
+          <Check className="w-8 h-8 text-orbi-accent" />
           <p className="text-white font-medium">¡Invitación aceptada!</p>
-          <p className="text-sm text-slate-400">Entrando al proyecto...</p>
+          <p className="text-sm text-orbi-muted">Entrando al proyecto...</p>
         </div>
       )}
 
       {status === "login" && (
         <div className="flex flex-col items-center gap-2 text-center">
           <p className="text-white font-medium">Necesitas iniciar sesión primero</p>
-          <p className="text-sm text-slate-400">Redirigiendo al login...</p>
+          <p className="text-sm text-orbi-muted">Redirigiendo al login...</p>
         </div>
       )}
 
@@ -72,7 +72,7 @@ function AcceptInviteContent() {
           <p className="text-white font-medium">Invitación inválida o expirada</p>
           <button
             onClick={() => router.push("/dashboard")}
-            className="text-sm text-emerald-400 hover:text-emerald-300 mt-2"
+            className="text-sm text-orbi-accent hover:text-orbi-accent mt-2"
           >
             Ir al dashboard
           </button>

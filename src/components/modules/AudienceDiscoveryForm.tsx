@@ -41,8 +41,8 @@ function PersonaCard({
     <div
       className={`rounded-xl border transition-all duration-200 overflow-hidden ${
         selected
-          ? "border-emerald-500 bg-emerald-950/20 shadow-emerald-900/30 shadow-lg"
-          : "border-slate-800 bg-slate-900/60 hover:border-slate-700"
+          ? "border-orbi-accent bg-emerald-950/20 shadow-emerald-900/30 shadow-lg"
+          : "border-orbi-border bg-orbi-surface/60 hover:border-orbi-border-light"
       }`}
     >
       {/* Card header */}
@@ -58,7 +58,7 @@ function PersonaCard({
           <div
             className={`mt-0.5 shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
               selected
-                ? "border-emerald-500 bg-emerald-500"
+                ? "border-orbi-accent bg-orbi-primary"
                 : "border-slate-600 bg-transparent"
             }`}
           >
@@ -69,25 +69,25 @@ function PersonaCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className={`font-semibold text-sm leading-tight ${selected ? "text-emerald-300" : "text-white"}`}>
+                <h3 className={`font-semibold text-sm leading-tight ${selected ? "text-orbi-accent" : "text-white"}`}>
                   {persona.name}
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">{persona.role}</p>
+                <p className="text-xs text-orbi-muted mt-0.5">{persona.role}</p>
                 {persona.age && (
-                  <p className="text-[10px] text-slate-600 mt-0.5">{persona.age} años</p>
+                  <p className="text-[10px] text-orbi-secondary mt-0.5">{persona.age} años</p>
                 )}
               </div>
               <div className="flex items-center gap-1 shrink-0">
                 <button
                   onClick={(e) => { e.stopPropagation(); onDiscard(); }}
-                  className="p-1 rounded text-slate-600 hover:text-rose-400 hover:bg-rose-400/10 transition-colors"
+                  className="p-1 rounded text-orbi-secondary hover:text-rose-400 hover:bg-rose-400/10 transition-colors"
                   title="Descartar y generar otra"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }}
-                  className="text-slate-500 hover:text-slate-300 transition-colors"
+                  className="text-orbi-muted hover:text-slate-300 transition-colors"
                   aria-label={expanded ? "Colapsar" : "Ver detalles"}
                 >
                   {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -96,10 +96,10 @@ function PersonaCard({
             </div>
 
             {/* Company profile */}
-            <p className="text-xs text-slate-500 mt-2 leading-relaxed">{persona.companyProfile}</p>
+            <p className="text-xs text-orbi-muted mt-2 leading-relaxed">{persona.companyProfile}</p>
 
             {/* JTBD preview */}
-            <div className="mt-3 p-2.5 rounded-lg bg-slate-800/60">
+            <div className="mt-3 p-2.5 rounded-lg bg-orbi-card/60">
               <p className="text-xs text-slate-300 leading-relaxed line-clamp-3 italic">
                 &ldquo;{persona.jtbd}&rdquo;
               </p>
@@ -110,7 +110,7 @@ function PersonaCard({
               {persona.topPains.slice(0, 2).map((pain, i) => (
                 <span
                   key={i}
-                  className="text-[10px] text-slate-400 bg-slate-800 rounded-full px-2 py-0.5 leading-none"
+                  className="text-[10px] text-orbi-muted bg-orbi-card rounded-full px-2 py-0.5 leading-none"
                 >
                   {pain.length > 40 ? pain.slice(0, 40) + "…" : pain}
                 </span>
@@ -122,12 +122,12 @@ function PersonaCard({
 
       {/* Expanded details */}
       {expanded && (
-        <div className="border-t border-slate-800 px-4 pb-4 space-y-4 mt-0">
+        <div className="border-t border-orbi-border px-4 pb-4 space-y-4 mt-0">
           {/* Triggers */}
           <Section icon={<Zap className="w-3.5 h-3.5 text-yellow-500" />} title="Trigger events">
             <ul className="space-y-1">
               {persona.triggerEvents.map((t, i) => (
-                <li key={i} className="text-xs text-slate-400 flex gap-1.5 leading-relaxed">
+                <li key={i} className="text-xs text-orbi-muted flex gap-1.5 leading-relaxed">
                   <span className="text-yellow-600 shrink-0 mt-0.5">→</span>
                   <span>{t}</span>
                 </li>
@@ -136,11 +136,11 @@ function PersonaCard({
           </Section>
 
           {/* Desired outcomes */}
-          <Section icon={<Target className="w-3.5 h-3.5 text-emerald-500" />} title="Lo que quiere lograr">
+          <Section icon={<Target className="w-3.5 h-3.5 text-orbi-accent" />} title="Lo que quiere lograr">
             <ul className="space-y-1">
               {persona.desiredOutcomes.map((o, i) => (
-                <li key={i} className="text-xs text-slate-400 flex gap-1.5 leading-relaxed">
-                  <Check className="w-3 h-3 text-emerald-600 shrink-0 mt-0.5" />
+                <li key={i} className="text-xs text-orbi-muted flex gap-1.5 leading-relaxed">
+                  <Check className="w-3 h-3 text-orbi-accent-dim shrink-0 mt-0.5" />
                   <span>{o}</span>
                 </li>
               ))}
@@ -179,7 +179,7 @@ function PersonaCard({
           <Section icon={<AlertCircle className="w-3.5 h-3.5 text-rose-400" />} title="Objeciones frecuentes">
             <ul className="space-y-1">
               {persona.objections.map((o, i) => (
-                <li key={i} className="text-xs text-slate-400 flex gap-1.5 leading-relaxed">
+                <li key={i} className="text-xs text-orbi-muted flex gap-1.5 leading-relaxed">
                   <span className="text-rose-600 shrink-0">?</span>
                   <span>{o}</span>
                 </li>
@@ -205,7 +205,7 @@ function Section({
     <div className="pt-3">
       <div className="flex items-center gap-1.5 mb-2">
         {icon}
-        <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">{title}</span>
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-orbi-muted">{title}</span>
       </div>
       {children}
     </div>
@@ -330,17 +330,17 @@ export default function AudienceDiscoveryForm() {
         <div className="relative">
           <Users className="w-10 h-10 text-slate-700" />
           <div className="absolute -top-1 -right-1">
-            <Loader2 className="w-5 h-5 text-emerald-500 animate-spin" />
+            <Loader2 className="w-5 h-5 text-orbi-accent animate-spin" />
           </div>
         </div>
         <div className="text-center">
           <p className="text-slate-300 font-medium text-sm">Gemini está analizando tu producto...</p>
-          <p className="text-slate-500 text-xs mt-1">Identificando quién compra y quién usa — 10–20 seg</p>
+          <p className="text-orbi-muted text-xs mt-1">Identificando quién compra y quién usa — 10–20 seg</p>
         </div>
         {/* Skeleton cards */}
         <div className="w-full space-y-3 mt-2">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-28 rounded-xl border border-slate-800 bg-slate-900/40 animate-pulse" />
+            <div key={i} className="h-28 rounded-xl border border-orbi-border bg-orbi-surface/40 animate-pulse" />
           ))}
         </div>
       </div>
@@ -368,20 +368,20 @@ export default function AudienceDiscoveryForm() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Sparkles className="w-4 h-4 text-emerald-500" />
-            <span className="text-xs font-semibold text-emerald-500 uppercase tracking-widest">
+            <Sparkles className="w-4 h-4 text-orbi-accent" />
+            <span className="text-xs font-semibold text-orbi-accent uppercase tracking-widest">
               {personas.length} audiencias generadas
             </span>
           </div>
-          <p className="text-sm text-slate-400 leading-relaxed">
+          <p className="text-sm text-orbi-muted leading-relaxed">
             Selecciona hasta <strong className="text-white">3 audiencias</strong> que mejor representen
             a tus clientes ideales. Estas guiarán todo el contenido siguiente.
           </p>
         </div>
         <div className="shrink-0 text-right">
           <span className="text-2xl font-bold text-white">{selectedCount}</span>
-          <span className="text-slate-500 text-sm">/3</span>
-          <p className="text-[10px] text-slate-600 mt-0.5">seleccionadas</p>
+          <span className="text-orbi-muted text-sm">/3</span>
+          <p className="text-[10px] text-orbi-secondary mt-0.5">seleccionadas</p>
         </div>
       </div>
 
@@ -391,7 +391,7 @@ export default function AudienceDiscoveryForm() {
           <div
             key={i}
             className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-              i < selectedCount ? "bg-emerald-500" : "bg-slate-800"
+              i < selectedCount ? "bg-orbi-primary" : "bg-orbi-card"
             }`}
           />
         ))}
@@ -402,9 +402,9 @@ export default function AudienceDiscoveryForm() {
         {personas.map((persona) => (
           <div key={persona.id} className="relative">
             {regeneratingId === persona.id && (
-              <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-slate-900/80 backdrop-blur-sm">
+              <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-orbi-surface/80 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 text-emerald-500 animate-spin" />
+                  <Loader2 className="w-4 h-4 text-orbi-accent animate-spin" />
                   <span className="text-sm text-slate-300">Generando nueva audiencia...</span>
                 </div>
               </div>
@@ -420,8 +420,8 @@ export default function AudienceDiscoveryForm() {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-2 border-t border-slate-800">
-        <div className="text-sm text-slate-500">
+      <div className="flex items-center justify-between pt-2 border-t border-orbi-border">
+        <div className="text-sm text-orbi-muted">
           {selectedCount === 0 && "Selecciona al menos una audiencia para continuar"}
           {selectedCount === 1 && "1 audiencia seleccionada — puedes elegir hasta 2 más"}
           {selectedCount === 2 && "2 audiencias — puedes agregar 1 más o continuar"}

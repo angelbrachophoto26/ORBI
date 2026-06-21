@@ -62,22 +62,22 @@ export default function InviteModal({ projectId, projectName, onClose }: Props) 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
+      <div className="w-full max-w-md bg-orbi-surface border border-orbi-border rounded-2xl p-6 shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
-            <UserPlus className="w-5 h-5 text-emerald-500" />
+            <UserPlus className="w-5 h-5 text-orbi-accent" />
             <h2 className="text-white font-semibold">Invitar colaborador</h2>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-500 hover:text-slate-300 transition-colors"
+            className="text-orbi-muted hover:text-slate-300 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <p className="text-sm text-slate-400 mb-5">
+        <p className="text-sm text-orbi-muted mb-5">
           El colaborador podrá ver y editar{" "}
           <strong className="text-white">"{projectName}"</strong> en tiempo real.
         </p>
@@ -85,15 +85,15 @@ export default function InviteModal({ projectId, projectName, onClose }: Props) 
         {sent ? (
           <div className="flex flex-col items-center gap-3 py-6">
             <div className="w-12 h-12 rounded-full bg-emerald-900/40 border border-emerald-700/40 flex items-center justify-center">
-              <Check className="w-6 h-6 text-emerald-400" />
+              <Check className="w-6 h-6 text-orbi-accent" />
             </div>
             <p className="text-white font-medium">Invitación enviada</p>
-            <p className="text-sm text-slate-400 text-center">
+            <p className="text-sm text-orbi-muted text-center">
               Le enviamos un email a <strong className="text-slate-300">{email}</strong> con el link para unirse.
             </p>
             <button
               onClick={() => { setSent(false); setEmail(""); }}
-              className="mt-2 text-sm text-emerald-400 hover:text-emerald-300"
+              className="mt-2 text-sm text-orbi-accent hover:text-orbi-accent"
             >
               Invitar a otro
             </button>
@@ -101,14 +101,14 @@ export default function InviteModal({ projectId, projectName, onClose }: Props) 
         ) : (
           <form onSubmit={handleInvite} className="space-y-3">
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-orbi-muted" />
               <input
                 type="email"
                 placeholder="email@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-orbi-card border border-orbi-border-light rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orbi-accent transition-colors"
               />
             </div>
 
@@ -117,7 +117,7 @@ export default function InviteModal({ projectId, projectName, onClose }: Props) 
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors text-sm"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-orbi-primary hover:bg-orbi-primary disabled:opacity-50 text-white font-semibold rounded-xl transition-colors text-sm"
             >
               <Send className="w-4 h-4" />
               {loading ? "Enviando..." : "Enviar invitación"}

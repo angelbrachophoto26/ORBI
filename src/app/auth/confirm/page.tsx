@@ -37,13 +37,13 @@ export default function AuthConfirmPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center gap-4">
-      <div className="p-2 rounded-xl bg-emerald-600">
+    <div className="min-h-screen bg-orbi-bg flex flex-col items-center justify-center gap-4">
+      <div className="p-2 rounded-xl bg-orbi-primary">
         <Orbit className="w-6 h-6 text-white" />
       </div>
       <div className="flex flex-col items-center gap-2">
-        <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm text-slate-400">Verificando tu sesión...</p>
+        <div className="w-6 h-6 border-2 border-orbi-accent border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm text-orbi-muted">Verificando tu sesión...</p>
       </div>
     </div>
   );

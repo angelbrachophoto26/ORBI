@@ -20,18 +20,18 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={id}
           className={cn(
-            "w-full px-3 py-2.5 bg-slate-800/60 border border-slate-700 rounded-lg text-white text-sm appearance-none",
-            "focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-200",
+            "w-full px-3 py-2.5 bg-orbi-card/60 border border-orbi-border-light rounded-lg text-white text-sm appearance-none",
+            "focus:outline-none focus:ring-2 focus:ring-orbi-accent/50 focus:border-orbi-accent transition-all duration-200",
             error && "border-red-500",
             className
           )}
           {...props}
         >
-          <option value="" disabled className="bg-slate-900">
+          <option value="" disabled className="bg-orbi-surface">
             Selecciona una opción
           </option>
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-slate-900">
+            <option key={opt.value} value={opt.value} className="bg-orbi-surface">
               {opt.label}
             </option>
           ))}

@@ -120,8 +120,8 @@ export default function ProductBriefForm() {
   if (projectLoading) {
     return (
       <div className="flex items-center justify-center py-20 gap-3">
-        <Loader2 className="w-5 h-5 text-emerald-500 animate-spin" />
-        <span className="text-sm text-slate-400">Cargando proyecto...</span>
+        <Loader2 className="w-5 h-5 text-orbi-accent animate-spin" />
+        <span className="text-sm text-orbi-muted">Cargando proyecto...</span>
       </div>
     );
   }
@@ -143,13 +143,13 @@ export default function ProductBriefForm() {
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       {/* Progress */}
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+        <div className="flex-1 h-1.5 bg-orbi-card rounded-full overflow-hidden">
           <div
-            className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+            className="h-full bg-orbi-primary rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <span className="text-xs text-slate-500 shrink-0">{completedFields}/{totalRequired} campos</span>
+        <span className="text-xs text-orbi-muted shrink-0">{completedFields}/{totalRequired} campos</span>
       </div>
 
       {/* Fields */}
@@ -234,9 +234,9 @@ export default function ProductBriefForm() {
       )}
 
       {/* Submit */}
-      <div className="flex items-center justify-between pt-2 border-t border-slate-800">
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <Sparkles className="w-4 h-4 text-emerald-500" />
+      <div className="flex items-center justify-between pt-2 border-t border-orbi-border">
+        <div className="flex items-center gap-2 text-sm text-orbi-muted">
+          <Sparkles className="w-4 h-4 text-orbi-accent" />
           <span>Esta info alimentará todos los módulos siguientes</span>
         </div>
         <Button type="submit" size="lg" disabled={saving}>

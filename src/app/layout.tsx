@@ -16,6 +16,12 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Orbi — Marketing Intelligence",
   description: "La plataforma de marketing inteligente de Life26",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/icon-192.png",
+  },
+  themeColor: "#223f53",
 };
 
 export default function RootLayout({

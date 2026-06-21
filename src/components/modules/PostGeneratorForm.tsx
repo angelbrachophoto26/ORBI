@@ -52,8 +52,8 @@ function CopyButton({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 1500);
   }
   return (
-    <button onClick={handleCopy} className="p-1 rounded text-slate-600 hover:text-slate-300 hover:bg-slate-700 transition-colors" title="Copiar">
-      {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+    <button onClick={handleCopy} className="p-1 rounded text-orbi-secondary hover:text-slate-300 hover:bg-orbi-primary transition-colors" title="Copiar">
+      {copied ? <Check className="w-3.5 h-3.5 text-orbi-accent" /> : <Copy className="w-3.5 h-3.5" />}
     </button>
   );
 }
@@ -75,7 +75,7 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
   const fullText = [post.hook, "", post.body, "", post.cta, "", post.hashtags.map(h => `#${h}`).join(" ")].join("\n").trim();
 
   return (
-    <div className={`rounded-xl border transition-all ${post.selected ? `${selectedColor}` : "border-slate-800 bg-slate-900/60"} ${regenerating ? "opacity-50 pointer-events-none" : ""}`}>
+    <div className={`rounded-xl border transition-all ${post.selected ? `${selectedColor}` : "border-orbi-border bg-orbi-surface/60"} ${regenerating ? "opacity-50 pointer-events-none" : ""}`}>
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={onToggle}>
         <div className={`shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${post.selected ? checkColor : "border-slate-600"}`}>
@@ -87,26 +87,26 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
             <p className={`text-sm font-semibold ${post.selected ? textColor : "text-white"}`}>{post.pillarLabel}</p>
             <span className={`text-[10px] px-1.5 py-0.5 rounded ${pm.badge}`}>{fmt.icon} {fmt.label}</span>
           </div>
-          <p className="text-xs text-slate-500 truncate mt-0.5">{post.hook}</p>
+          <p className="text-xs text-orbi-muted truncate mt-0.5">{post.hook}</p>
         </div>
         <div className="flex items-center gap-1 shrink-0">
-          {regenerating && <Loader2 className="w-3.5 h-3.5 animate-spin text-slate-400" />}
-          <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-slate-600 hover:text-emerald-400 hover:bg-emerald-400/10 transition-colors" title="Regenerar">
+          {regenerating && <Loader2 className="w-3.5 h-3.5 animate-spin text-orbi-muted" />}
+          <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-orbi-secondary hover:text-orbi-accent hover:bg-orbi-primary/10 transition-colors" title="Regenerar">
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
           <CopyButton text={fullText} />
-          <button onClick={(e) => { e.stopPropagation(); setExpanded(v => !v); }} className="text-slate-500 hover:text-slate-300 transition-colors">
+          <button onClick={(e) => { e.stopPropagation(); setExpanded(v => !v); }} className="text-orbi-muted hover:text-slate-300 transition-colors">
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
       {expanded && (
-        <div className="px-4 pb-4 space-y-3 border-t border-slate-800/60 pt-3">
+        <div className="px-4 pb-4 space-y-3 border-t border-orbi-border/60 pt-3">
           {/* Hook */}
           <div>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5">Hook — para el scroll</p>
-            <div className="flex items-start gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
+            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">Hook — para el scroll</p>
+            <div className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
               <p className="flex-1 text-sm text-white font-medium leading-relaxed">{post.hook}</p>
               <CopyButton text={post.hook} />
             </div>
@@ -114,8 +114,8 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
 
           {/* Body */}
           <div>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5">Cuerpo</p>
-            <div className="flex items-start gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
+            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">Cuerpo</p>
+            <div className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
               <p className="flex-1 text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">{post.body}</p>
               <CopyButton text={post.body} />
             </div>
@@ -123,9 +123,9 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
 
           {/* CTA */}
           <div>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5">CTA</p>
-            <div className="flex items-center gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
-              <p className="flex-1 text-sm text-emerald-300">{post.cta}</p>
+            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">CTA</p>
+            <div className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
+              <p className="flex-1 text-sm text-orbi-accent">{post.cta}</p>
               <CopyButton text={post.cta} />
             </div>
           </div>
@@ -133,8 +133,8 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
           {/* Hashtags */}
           {post.hashtags.length > 0 && (
             <div>
-              <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5">Hashtags</p>
-              <div className="flex items-start gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
+              <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">Hashtags</p>
+              <div className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
                 <div className="flex-1 flex flex-wrap gap-1.5">
                   {post.hashtags.map((h, i) => (
                     <span key={i} className="text-[11px] text-blue-400 bg-blue-950/30 border border-blue-900/30 rounded px-1.5 py-0.5">#{h}</span>
@@ -148,11 +148,11 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
           {/* Carousel slides */}
           {post.format === "carousel" && post.carouselSlides && (
             <div>
-              <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5">🎠 Slides del Carousel</p>
+              <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">🎠 Slides del Carousel</p>
               <div className="space-y-1.5">
                 {post.carouselSlides.map((slide, i) => (
-                  <div key={i} className="flex items-center gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
-                    <span className="text-[10px] text-slate-600 w-5 shrink-0 font-mono">{i + 1}</span>
+                  <div key={i} className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
+                    <span className="text-[10px] text-orbi-secondary w-5 shrink-0 font-mono">{i + 1}</span>
                     <span className="flex-1 text-xs text-slate-300">{slide}</span>
                     <CopyButton text={slide} />
                   </div>
@@ -164,9 +164,9 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
           {/* Reel script */}
           {post.format === "reel" && post.reelScript && (
             <div>
-              <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5">🎬 Script del Reel</p>
-              <div className="flex items-start gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
-                <p className="flex-1 text-xs text-slate-400 leading-relaxed whitespace-pre-wrap font-mono">{post.reelScript}</p>
+              <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">🎬 Script del Reel</p>
+              <div className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
+                <p className="flex-1 text-xs text-orbi-muted leading-relaxed whitespace-pre-wrap font-mono">{post.reelScript}</p>
                 <CopyButton text={post.reelScript} />
               </div>
             </div>
@@ -175,7 +175,7 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
           {/* Copy all */}
           <button
             onClick={() => navigator.clipboard.writeText(fullText)}
-            className="w-full text-xs text-slate-500 hover:text-slate-300 border border-slate-800 hover:border-slate-700 rounded-lg py-2 transition-colors flex items-center justify-center gap-1.5"
+            className="w-full text-xs text-orbi-muted hover:text-slate-300 border border-orbi-border hover:border-orbi-border-light rounded-lg py-2 transition-colors flex items-center justify-center gap-1.5"
           >
             <Copy className="w-3.5 h-3.5" /> Copiar post completo
           </button>
@@ -286,15 +286,15 @@ export default function PostGeneratorForm() {
         <div className="relative">
           <span className="text-5xl">📸</span>
           <div className="absolute -top-1 -right-1">
-            <Loader2 className="w-5 h-5 text-emerald-500 animate-spin" />
+            <Loader2 className="w-5 h-5 text-orbi-accent animate-spin" />
           </div>
         </div>
         <div className="text-center">
           <p className="text-slate-300 font-medium text-sm">Generando posts para {PLATFORM_META[platform].label}…</p>
-          <p className="text-slate-500 text-xs mt-1">5 pilares de contenido — 10–15 seg</p>
+          <p className="text-orbi-muted text-xs mt-1">5 pilares de contenido — 10–15 seg</p>
         </div>
         <div className="w-full space-y-3 mt-2">
-          {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-20 rounded-xl border border-slate-800 bg-slate-900/40 animate-pulse" />)}
+          {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-20 rounded-xl border border-orbi-border bg-orbi-surface/40 animate-pulse" />)}
         </div>
       </div>
     );
@@ -314,38 +314,38 @@ export default function PostGeneratorForm() {
     <div className="flex flex-col gap-5">
       {/* Platform switcher */}
       <div className="flex flex-wrap items-center gap-2">
-        <p className="text-xs text-slate-500 shrink-0">Plataforma:</p>
+        <p className="text-xs text-orbi-muted shrink-0">Plataforma:</p>
         {(["instagram", "facebook", "linkedin"] as PostPlatform[]).map(p => {
           const m = PLATFORM_META[p];
           const active = platform === p;
           return (
             <button key={p} onClick={() => switchPlatform(p)}
-              className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all ${active ? `${m.bg} ${m.border} ${m.color}` : "border-slate-800 text-slate-500 hover:border-slate-700 hover:text-slate-300"}`}>
+              className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all ${active ? `${m.bg} ${m.border} ${m.color}` : "border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-slate-300"}`}>
               {m.icon} {m.label}
             </button>
           );
         })}
         <button onClick={() => generate(platform)}
-          className="ml-auto text-xs px-3 py-1.5 rounded-lg border border-slate-800 text-slate-500 hover:border-slate-700 hover:text-slate-300 transition-all flex items-center gap-1.5">
+          className="ml-auto text-xs px-3 py-1.5 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-slate-300 transition-all flex items-center gap-1.5">
           <RefreshCw className="w-3 h-3" /> Regenerar todo
         </button>
       </div>
 
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
-        <p className="text-sm text-slate-400 leading-relaxed">
+        <p className="text-sm text-orbi-muted leading-relaxed">
           Cada post cubre un <strong className="text-white">pilar de contenido</strong> distinto. Selecciona los que quieres guardar y copia cualquier elemento individualmente.
         </p>
         <div className="shrink-0 text-right">
           <span className="text-2xl font-bold text-white">{selectedCount}</span>
-          <p className="text-[10px] text-slate-600 mt-0.5">seleccionados</p>
+          <p className="text-[10px] text-orbi-secondary mt-0.5">seleccionados</p>
         </div>
       </div>
 
       {/* Pillar legend */}
       <div className="flex flex-wrap gap-2">
         {Object.entries(PILLAR_ICONS).map(([key, icon]) => (
-          <span key={key} className="text-[11px] px-2 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+          <span key={key} className="text-[11px] px-2 py-1 rounded-full bg-orbi-card text-orbi-muted border border-orbi-border-light">
             {icon} {key === "educational" ? "Educativo" : key === "pain" ? "Problema" : key === "outcome" ? "Resultado" : key === "behind_scenes" ? "Detrás de escena" : "Promocional"}
           </span>
         ))}
@@ -366,8 +366,8 @@ export default function PostGeneratorForm() {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-2 border-t border-slate-800">
-        <p className="text-sm text-slate-500">
+      <div className="flex items-center justify-between pt-2 border-t border-orbi-border">
+        <p className="text-sm text-orbi-muted">
           {selectedCount === 0 ? "Selecciona posts para continuar" : `${selectedCount} post${selectedCount !== 1 ? "s" : ""} seleccionado${selectedCount !== 1 ? "s" : ""}`}
         </p>
         <Button size="lg" disabled={saving} onClick={handleContinue}>

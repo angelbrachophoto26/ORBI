@@ -3,10 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --background: #020617;
-  --foreground: #f8fafc;
-  --emerald: #059669;
-  --gold: #D4AF37;
+  --background: #08151f;
+  --foreground: #f0eeea;
+  --orbi-bg: #08151f;
+  --orbi-surface: #0f1e2a;
+  --orbi-card: #162535;
+  --orbi-primary: #223f53;
+  --orbi-primary-hover: #2d5470;
+  --orbi-accent: #d4cb99;
+  --orbi-accent-dim: #b8af82;
+  --orbi-secondary: #59574d;
+  --orbi-muted: #b1bac6;
+  --orbi-border: #1a3347;
+  --orbi-border-light: #223f53;
 }
 
 html {
@@ -15,14 +24,14 @@ html {
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: var(--orbi-bg);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #334155 transparent;
+  scrollbar-color: #223f53 transparent;
 }
 
 *::-webkit-scrollbar {
@@ -35,7 +44,6 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #223f53;
   border-radius: 9999px;
 }
-

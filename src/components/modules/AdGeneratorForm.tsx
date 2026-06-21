@@ -56,10 +56,10 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="p-1 rounded text-slate-600 hover:text-slate-300 hover:bg-slate-700 transition-colors"
+      className="p-1 rounded text-orbi-secondary hover:text-slate-300 hover:bg-orbi-primary transition-colors"
       title="Copiar"
     >
-      {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+      {copied ? <Check className="w-3.5 h-3.5 text-orbi-accent" /> : <Copy className="w-3.5 h-3.5" />}
     </button>
   );
 }
@@ -68,7 +68,7 @@ function CharBadge({ text, limit }: { text: string; limit: number }) {
   const len = text.length;
   const over = len > limit;
   return (
-    <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${over ? "bg-rose-950/60 text-rose-400" : "bg-slate-800 text-slate-500"}`}>
+    <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${over ? "bg-rose-950/60 text-rose-400" : "bg-orbi-card text-orbi-muted"}`}>
       {len}/{limit}
     </span>
   );
@@ -84,7 +84,7 @@ function GoogleAdCard({ ad, onToggle, onRegenerate, regenerating }: {
   const meta = PLATFORM_META.google;
 
   return (
-    <div className={`rounded-xl border transition-all ${ad.selected ? "border-blue-600 bg-blue-950/10" : "border-slate-800 bg-slate-900/60"} ${regenerating ? "opacity-50 pointer-events-none" : ""}`}>
+    <div className={`rounded-xl border transition-all ${ad.selected ? "border-blue-600 bg-blue-950/10" : "border-orbi-border bg-orbi-surface/60"} ${regenerating ? "opacity-50 pointer-events-none" : ""}`}>
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={onToggle}>
         <div className={`shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${ad.selected ? "border-blue-500 bg-blue-500" : "border-slate-600"}`}>
@@ -97,24 +97,24 @@ function GoogleAdCard({ ad, onToggle, onRegenerate, regenerating }: {
         </div>
         <div className="flex items-center gap-1">
           {regenerating && <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />}
-          <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-slate-600 hover:text-blue-400 hover:bg-blue-400/10 transition-colors" title="Regenerar">
+          <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-orbi-secondary hover:text-blue-400 hover:bg-blue-400/10 transition-colors" title="Regenerar">
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
-          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-slate-500 hover:text-slate-300 transition-colors">
+          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-orbi-muted hover:text-slate-300 transition-colors">
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
       {expanded && (
-        <div className="px-4 pb-4 space-y-4 border-t border-slate-800/60 pt-3">
+        <div className="px-4 pb-4 space-y-4 border-t border-orbi-border/60 pt-3">
           {/* Headlines */}
           <div>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-2">Headlines (máx. 30 car.)</p>
+            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Headlines (máx. 30 car.)</p>
             <div className="space-y-2">
               {(ad.headlines ?? []).map((h, i) => (
-                <div key={i} className="flex items-center gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
-                  <span className="text-[10px] text-slate-600 w-4 shrink-0">{i + 1}</span>
+                <div key={i} className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
+                  <span className="text-[10px] text-orbi-secondary w-4 shrink-0">{i + 1}</span>
                   <span className="flex-1 text-sm text-slate-200">{h}</span>
                   <CharBadge text={h} limit={30} />
                   <CopyButton text={h} />
@@ -124,11 +124,11 @@ function GoogleAdCard({ ad, onToggle, onRegenerate, regenerating }: {
           </div>
           {/* Descriptions */}
           <div>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-2">Descriptions (máx. 90 car.)</p>
+            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Descriptions (máx. 90 car.)</p>
             <div className="space-y-2">
               {(ad.descriptions ?? []).map((d, i) => (
-                <div key={i} className="flex items-start gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
-                  <span className="text-[10px] text-slate-600 w-4 shrink-0 mt-0.5">{i + 1}</span>
+                <div key={i} className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
+                  <span className="text-[10px] text-orbi-secondary w-4 shrink-0 mt-0.5">{i + 1}</span>
                   <span className="flex-1 text-sm text-slate-300 leading-relaxed">{d}</span>
                   <div className="flex items-start gap-1 shrink-0 mt-0.5">
                     <CharBadge text={d} limit={90} />
@@ -154,7 +154,7 @@ function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
   const meta = PLATFORM_META.meta;
 
   return (
-    <div className={`rounded-xl border transition-all ${ad.selected ? "border-purple-600 bg-purple-950/10" : "border-slate-800 bg-slate-900/60"} ${regenerating ? "opacity-50 pointer-events-none" : ""}`}>
+    <div className={`rounded-xl border transition-all ${ad.selected ? "border-purple-600 bg-purple-950/10" : "border-orbi-border bg-orbi-surface/60"} ${regenerating ? "opacity-50 pointer-events-none" : ""}`}>
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={onToggle}>
         <div className={`shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${ad.selected ? "border-purple-500 bg-purple-500" : "border-slate-600"}`}>
@@ -167,21 +167,21 @@ function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
         </div>
         <div className="flex items-center gap-1">
           {regenerating && <Loader2 className="w-3.5 h-3.5 text-purple-400 animate-spin" />}
-          <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-slate-600 hover:text-purple-400 hover:bg-purple-400/10 transition-colors" title="Regenerar">
+          <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-orbi-secondary hover:text-purple-400 hover:bg-purple-400/10 transition-colors" title="Regenerar">
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
-          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-slate-500 hover:text-slate-300 transition-colors">
+          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-orbi-muted hover:text-slate-300 transition-colors">
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
         </div>
       </div>
 
       {expanded && (
-        <div className="px-4 pb-4 space-y-3 border-t border-slate-800/60 pt-3">
+        <div className="px-4 pb-4 space-y-3 border-t border-orbi-border/60 pt-3">
           {/* Primary text */}
           <div>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-2">Primary Text (máx. 125 car.)</p>
-            <div className="flex items-start gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
+            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Primary Text (máx. 125 car.)</p>
+            <div className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
               <span className="flex-1 text-sm text-slate-200 leading-relaxed">{ad.primaryText}</span>
               <div className="flex items-start gap-1 shrink-0">
                 <CharBadge text={ad.primaryText ?? ""} limit={125} />
@@ -191,8 +191,8 @@ function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
           </div>
           {/* Headline */}
           <div>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-2">Headline (máx. 40 car.)</p>
-            <div className="flex items-center gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
+            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Headline (máx. 40 car.)</p>
+            <div className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
               <span className="flex-1 text-sm text-slate-200 font-medium">{ad.headline}</span>
               <CharBadge text={ad.headline ?? ""} limit={40} />
               <CopyButton text={ad.headline ?? ""} />
@@ -200,8 +200,8 @@ function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
           </div>
           {/* Description */}
           <div>
-            <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-widest mb-2">Description (máx. 30 car.)</p>
-            <div className="flex items-center gap-2 bg-slate-800/40 rounded-lg px-3 py-2">
+            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Description (máx. 30 car.)</p>
+            <div className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
               <span className="flex-1 text-sm text-slate-300">{ad.description}</span>
               <CharBadge text={ad.description ?? ""} limit={30} />
               <CopyButton text={ad.description ?? ""} />
@@ -338,16 +338,16 @@ export default function AdGeneratorForm() {
         <div className="relative">
           <Megaphone className="w-10 h-10 text-slate-700" />
           <div className="absolute -top-1 -right-1">
-            <Loader2 className="w-5 h-5 text-emerald-500 animate-spin" />
+            <Loader2 className="w-5 h-5 text-orbi-accent animate-spin" />
           </div>
         </div>
         <div className="text-center">
           <p className="text-slate-300 font-medium text-sm">Generando copies para {platform === "google" ? "Google Ads" : "Meta Ads"}…</p>
-          <p className="text-slate-500 text-xs mt-1">5 ángulos × plataforma — 10–15 seg</p>
+          <p className="text-orbi-muted text-xs mt-1">5 ángulos × plataforma — 10–15 seg</p>
         </div>
         <div className="w-full space-y-3 mt-2">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-20 rounded-xl border border-slate-800 bg-slate-900/40 animate-pulse" />
+            <div key={i} className="h-20 rounded-xl border border-orbi-border bg-orbi-surface/40 animate-pulse" />
           ))}
         </div>
       </div>
@@ -369,7 +369,7 @@ export default function AdGeneratorForm() {
     <div className="flex flex-col gap-5">
       {/* Platform switcher */}
       <div className="flex items-center gap-2">
-        <p className="text-xs text-slate-500 shrink-0">Plataforma:</p>
+        <p className="text-xs text-orbi-muted shrink-0">Plataforma:</p>
         <div className="flex gap-2">
           {(["google", "meta"] as AdPlatform[]).map((p) => {
             const m = PLATFORM_META[p];
@@ -381,7 +381,7 @@ export default function AdGeneratorForm() {
                 className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition-all ${
                   active
                     ? `${m.bg} ${m.border} ${m.color}`
-                    : "border-slate-800 text-slate-500 hover:border-slate-700 hover:text-slate-300"
+                    : "border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-slate-300"
                 }`}
               >
                 {m.label}
@@ -390,7 +390,7 @@ export default function AdGeneratorForm() {
           })}
           <button
             onClick={() => generate(platform)}
-            className="ml-auto text-xs px-3 py-1.5 rounded-lg border border-slate-800 text-slate-500 hover:border-slate-700 hover:text-slate-300 transition-all flex items-center gap-1.5"
+            className="ml-auto text-xs px-3 py-1.5 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-slate-300 transition-all flex items-center gap-1.5"
           >
             <RefreshCw className="w-3 h-3" />
             Regenerar todo
@@ -400,20 +400,20 @@ export default function AdGeneratorForm() {
 
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
-        <p className="text-sm text-slate-400 leading-relaxed">
+        <p className="text-sm text-orbi-muted leading-relaxed">
           Selecciona los anuncios que quieres guardar. Cada ícono representa un <strong className="text-white">ángulo de persuasión</strong> distinto.
           Puedes copiar cualquier elemento individualmente.
         </p>
         <div className="shrink-0 text-right">
           <span className="text-2xl font-bold text-white">{selectedCount}</span>
-          <p className="text-[10px] text-slate-600 mt-0.5">seleccionados</p>
+          <p className="text-[10px] text-orbi-secondary mt-0.5">seleccionados</p>
         </div>
       </div>
 
       {/* Angle legend */}
       <div className="flex flex-wrap gap-2">
         {Object.entries(ANGLE_ICONS).map(([key, icon]) => (
-          <span key={key} className="text-[11px] px-2 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+          <span key={key} className="text-[11px] px-2 py-1 rounded-full bg-orbi-card text-orbi-muted border border-orbi-border-light">
             {icon} {key === "pain" ? "Dolor" : key === "outcome" ? "Resultado" : key === "social_proof" ? "Prueba social" : key === "curiosity" ? "Curiosidad" : "Urgencia"}
           </span>
         ))}
@@ -443,8 +443,8 @@ export default function AdGeneratorForm() {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-2 border-t border-slate-800">
-        <p className="text-sm text-slate-500">
+      <div className="flex items-center justify-between pt-2 border-t border-orbi-border">
+        <p className="text-sm text-orbi-muted">
           {selectedCount === 0 ? "Selecciona al menos un anuncio para continuar" : `${selectedCount} anuncio${selectedCount !== 1 ? "s" : ""} seleccionado${selectedCount !== 1 ? "s" : ""}`}
         </p>
         <Button size="lg" disabled={saving} onClick={handleContinue}>
