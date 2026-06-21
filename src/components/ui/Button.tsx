@@ -14,13 +14,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           "inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
           {
-            "bg-orbi-primary hover:bg-orbi-primary-hover text-orbi-accent shadow-sm":
+            "bg-orbi-primary hover:bg-orbi-primary-hover text-white shadow-sm":
               variant === "primary",
             "bg-orbi-card hover:bg-orbi-border text-foreground border border-orbi-border":
               variant === "secondary",
             "hover:bg-orbi-card text-orbi-muted hover:text-foreground":
               variant === "ghost",
-            "bg-orbi-primary hover:bg-orbi-primary-hover text-orbi-accent shadow-sm":
+            "bg-orbi-accent hover:bg-orbi-accent-dim text-orbi-primary font-bold shadow-sm":
               variant === "gold",
           },
           {
