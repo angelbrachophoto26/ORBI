@@ -81,7 +81,7 @@ function MobilePanel({ what, how, next, extra }: Omit<ModulePanelProps, "classNa
   }, [open]);
 
   return (
-    <div ref={ref} className="fixed top-[58px] right-3 z-30 md:hidden">
+    <div ref={ref} className="fixed top-[66px] right-3 z-30 md:hidden">
       {/* Trigger button */}
       <button
         onClick={() => setOpen((v) => !v)}

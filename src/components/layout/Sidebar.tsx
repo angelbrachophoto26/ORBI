@@ -89,7 +89,7 @@ function Logo() {
         alt="Orbi by Life26"
         width={180}
         height={40}
-        className="h-8 w-auto max-w-[140px] md:max-w-[170px] object-contain"
+        className="h-10 w-auto max-w-[160px] md:max-w-[180px] object-contain"
         priority
       />
     </Link>
@@ -129,7 +129,7 @@ export default function Sidebar() {
       </aside>
 
       {/* ── Mobile top bar ──────────────────────────────────── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 h-14 flex items-center justify-between px-4 bg-orbi-primary border-b border-orbi-primary-hover">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 h-16 flex items-center justify-between px-4 bg-orbi-primary border-b border-orbi-primary-hover">
         <Logo />
         <button
           onClick={() => setOpen(true)}
