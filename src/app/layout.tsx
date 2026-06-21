@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -14,14 +15,27 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Orbi — Marketing Intelligence",
-  description: "La plataforma de marketing inteligente de Life26",
+  title: "Orbi",
+  description: "Tu plataforma de marketing con IA",
   manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    title: "Orbi",
+    statusBarStyle: "black-translucent",
+  },
   icons: {
     icon: "/icon-192.png",
-    apple: "/icon-192.png",
+    apple: "/apple-touch-icon.png",
   },
+};
+
+export const viewport: Viewport = {
   themeColor: "#223f53",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -30,10 +44,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="es">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ServiceWorkerRegister />
         {children}
       </body>
     </html>
