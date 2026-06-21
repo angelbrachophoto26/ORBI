@@ -83,18 +83,15 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
 
 function Logo() {
   return (
-    <Link href="/dashboard" className="flex items-center gap-2.5 group">
+    <Link href="/dashboard" className="block group">
       <NextImage
-        src="/logo.png"
-        alt="Orbi"
-        width={83}
-        height={83}
-        className="rounded-lg"
+        src="/logo-completo.png"
+        alt="Orbi by Life26"
+        width={180}
+        height={60}
+        className="w-full max-w-[160px] md:max-w-[180px] h-auto object-contain"
+        priority
       />
-      <div>
-        <span className="text-lg font-bold text-white tracking-tight">Orbi</span>
-        <span className="block text-[10px] text-orbi-muted leading-none -mt-0.5">by Life26</span>
-      </div>
     </Link>
   );
 }
