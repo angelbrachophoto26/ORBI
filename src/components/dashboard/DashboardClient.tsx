@@ -128,7 +128,7 @@ export default function DashboardClient() {
             <Orbit className="w-5 h-5 text-orbi-accent" />
             <span className="text-xs font-semibold text-orbi-accent uppercase tracking-widest">Orbi</span>
           </div>
-          <h1 className="text-2xl font-bold text-white">Mis proyectos</h1>
+          <h1 className="text-2xl font-bold text-foreground">Mis proyectos</h1>
           <p className="text-orbi-muted text-sm mt-1">Gestiona tus estrategias de marketing</p>
         </div>
 
@@ -145,10 +145,10 @@ export default function DashboardClient() {
             <div className="relative">
               <button
                 onClick={() => setShowInvites((v) => !v)}
-                className="relative p-2 rounded-lg text-orbi-muted hover:text-white hover:bg-orbi-card transition-colors"
+                className="relative p-2 rounded-lg text-orbi-muted hover:text-foreground hover:bg-orbi-card transition-colors"
               >
                 <Bell className="w-4 h-4" />
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-orbi-primary rounded-full text-[9px] text-white flex items-center justify-center font-bold">
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-orbi-primary rounded-full text-[9px] text-foreground flex items-center justify-center font-bold">
                   {pendingInvites.length}
                 </span>
               </button>
@@ -159,14 +159,14 @@ export default function DashboardClient() {
                     Invitaciones pendientes
                   </p>
                   {pendingInvites.map((invite) => (
-                    <div key={invite.id} className="flex items-center justify-between gap-3 p-3 bg-orbi-card/60 rounded-lg">
+                    <div key={invite.id} className="flex items-center justify-between gap-3 p-3 bg-orbi-card rounded-lg">
                       <div className="min-w-0">
-                        <p className="text-sm text-white font-medium truncate">{invite.projectName}</p>
+                        <p className="text-sm text-foreground font-medium truncate">{invite.projectName}</p>
                         <p className="text-xs text-orbi-muted">Te invitaron a colaborar</p>
                       </div>
                       <button
                         onClick={() => handleAcceptInvite(invite.id)}
-                        className="shrink-0 flex items-center gap-1 px-3 py-1.5 bg-orbi-primary hover:bg-orbi-primary text-white text-xs font-medium rounded-lg transition-colors"
+                        className="shrink-0 flex items-center gap-1 px-3 py-1.5 bg-orbi-primary hover:bg-orbi-primary text-foreground text-xs font-medium rounded-lg transition-colors"
                       >
                         <Check className="w-3 h-3" />
                         Aceptar
@@ -180,7 +180,7 @@ export default function DashboardClient() {
 
           <button
             onClick={handleLogout}
-            className="p-2 rounded-lg text-orbi-muted hover:text-slate-300 hover:bg-orbi-card transition-colors"
+            className="p-2 rounded-lg text-orbi-muted hover:text-foreground/80 hover:bg-orbi-card transition-colors"
             title="Cerrar sesión"
           >
             <LogOut className="w-4 h-4" />
@@ -193,24 +193,24 @@ export default function DashboardClient() {
         <div className="flex flex-wrap items-center gap-3 mb-6 md:mb-8">
           <div className="flex items-center gap-2 px-4 py-2 bg-orbi-surface border border-orbi-border rounded-lg">
             <TrendingUp className="w-4 h-4 text-orbi-accent" />
-            <span className="text-sm text-slate-300">
-              <span className="font-semibold text-white">{projects.length}</span>{" "}
+            <span className="text-sm text-foreground/80">
+              <span className="font-semibold text-foreground">{projects.length}</span>{" "}
               {projects.length === 1 ? "proyecto" : "proyectos"}
             </span>
           </div>
           {inProgress > 0 && (
             <div className="flex items-center gap-2 px-4 py-2 bg-orbi-surface border border-orbi-border rounded-lg">
               <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
-              <span className="text-sm text-slate-300">
-                <span className="font-semibold text-white">{inProgress}</span> en progreso
+              <span className="text-sm text-foreground/80">
+                <span className="font-semibold text-foreground">{inProgress}</span> en progreso
               </span>
             </div>
           )}
           {completed > 0 && (
             <div className="flex items-center gap-2 px-4 py-2 bg-orbi-surface border border-orbi-border rounded-lg">
               <div className="w-2 h-2 rounded-full bg-orbi-primary" />
-              <span className="text-sm text-slate-300">
-                <span className="font-semibold text-white">{completed}</span>{" "}
+              <span className="text-sm text-foreground/80">
+                <span className="font-semibold text-foreground">{completed}</span>{" "}
                 {completed === 1 ? "completado" : "completados"}
               </span>
             </div>
@@ -218,8 +218,8 @@ export default function DashboardClient() {
           {sharedProjects.length > 0 && (
             <div className="flex items-center gap-2 px-4 py-2 bg-orbi-surface border border-orbi-border rounded-lg">
               <Users className="w-4 h-4 text-blue-400" />
-              <span className="text-sm text-slate-300">
-                <span className="font-semibold text-white">{sharedProjects.length}</span> compartidos
+              <span className="text-sm text-foreground/80">
+                <span className="font-semibold text-foreground">{sharedProjects.length}</span> compartidos
               </span>
             </div>
           )}

@@ -69,12 +69,12 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
               Módulo {module.order} de 7
             </span>
           </div>
-          <h1 className="text-xl md:text-2xl font-bold text-white mb-1">{module.title}</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-foreground mb-1">{module.title}</h1>
           <p className="text-orbi-muted text-sm">{module.description}</p>
         </div>
 
         {/* Module content */}
-        <div className="bg-orbi-surface/50 border border-orbi-border rounded-xl p-4 md:p-6">
+        <div className="bg-white/80 border border-orbi-border rounded-xl p-4 md:p-6">
           {slug === "product-brief" && <ProductBriefForm />}
           {slug === "audience-discovery" && <AudienceDiscoveryForm />}
           {slug === "keyword-intelligence" && <KeywordIntelligenceForm />}
@@ -85,10 +85,10 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
 
           {!["product-brief","audience-discovery","keyword-intelligence","ad-generator","post-generator","content-generator","team-briefing"].includes(slug) && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="p-4 rounded-2xl bg-orbi-card/60 mb-4">
+              <div className="p-4 rounded-2xl bg-orbi-card mb-4">
                 <Package className="w-8 h-8 text-orbi-muted" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-300 mb-2">
+              <h3 className="text-lg font-semibold text-foreground/80 mb-2">
                 Módulo en construcción
               </h3>
               <p className="text-orbi-muted text-sm max-w-xs">

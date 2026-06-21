@@ -62,7 +62,7 @@ function PersonaCard({
                 : "border-slate-600 bg-transparent"
             }`}
           >
-            {selected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+            {selected && <Check className="w-3 h-3 text-foreground" strokeWidth={3} />}
           </div>
 
           {/* Main info */}
@@ -87,7 +87,7 @@ function PersonaCard({
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }}
-                  className="text-orbi-muted hover:text-slate-300 transition-colors"
+                  className="text-orbi-muted hover:text-foreground/80 transition-colors"
                   aria-label={expanded ? "Colapsar" : "Ver detalles"}
                 >
                   {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -99,8 +99,8 @@ function PersonaCard({
             <p className="text-xs text-orbi-muted mt-2 leading-relaxed">{persona.companyProfile}</p>
 
             {/* JTBD preview */}
-            <div className="mt-3 p-2.5 rounded-lg bg-orbi-card/60">
-              <p className="text-xs text-slate-300 leading-relaxed line-clamp-3 italic">
+            <div className="mt-3 p-2.5 rounded-lg bg-orbi-card">
+              <p className="text-xs text-foreground/80 leading-relaxed line-clamp-3 italic">
                 &ldquo;{persona.jtbd}&rdquo;
               </p>
             </div>
@@ -334,7 +334,7 @@ export default function AudienceDiscoveryForm() {
           </div>
         </div>
         <div className="text-center">
-          <p className="text-slate-300 font-medium text-sm">Gemini está analizando tu producto...</p>
+          <p className="text-foreground/80 font-medium text-sm">Gemini está analizando tu producto...</p>
           <p className="text-orbi-muted text-xs mt-1">Identificando quién compra y quién usa — 10–20 seg</p>
         </div>
         {/* Skeleton cards */}
@@ -352,7 +352,7 @@ export default function AudienceDiscoveryForm() {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
         <AlertCircle className="w-8 h-8 text-rose-500" />
-        <p className="text-slate-300 text-sm">{displayError}</p>
+        <p className="text-foreground/80 text-sm">{displayError}</p>
         <Button onClick={() => router.push("/dashboard")} size="sm">
           Volver al dashboard
         </Button>
@@ -379,7 +379,7 @@ export default function AudienceDiscoveryForm() {
           </p>
         </div>
         <div className="shrink-0 text-right">
-          <span className="text-2xl font-bold text-white">{selectedCount}</span>
+          <span className="text-2xl font-bold text-foreground">{selectedCount}</span>
           <span className="text-orbi-muted text-sm">/3</span>
           <p className="text-[10px] text-orbi-secondary mt-0.5">seleccionadas</p>
         </div>
@@ -405,7 +405,7 @@ export default function AudienceDiscoveryForm() {
               <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-orbi-surface/80 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 text-orbi-accent animate-spin" />
-                  <span className="text-sm text-slate-300">Generando nueva audiencia...</span>
+                  <span className="text-sm text-foreground/80">Generando nueva audiencia...</span>
                 </div>
               </div>
             )}

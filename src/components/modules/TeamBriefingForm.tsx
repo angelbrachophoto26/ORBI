@@ -21,7 +21,7 @@ function CopyButton({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 1500);
   }
   return (
-    <button onClick={handleCopy} className="p-1 rounded text-orbi-muted hover:text-slate-300 hover:bg-orbi-primary transition-colors" title="Copiar">
+    <button onClick={handleCopy} className="p-1 rounded text-orbi-muted hover:text-foreground/80 hover:bg-orbi-primary transition-colors" title="Copiar">
       {copied ? <Check className="w-3.5 h-3.5 text-orbi-accent" /> : <Copy className="w-3.5 h-3.5" />}
     </button>
   );
@@ -38,7 +38,7 @@ function Section({ icon, title, color, children }: {
         onClick={() => setOpen(v => !v)}
       >
         <div className={`p-1.5 rounded-lg ${color}`}>{icon}</div>
-        <span className="flex-1 text-sm font-semibold text-white">{title}</span>
+        <span className="flex-1 text-sm font-semibold text-foreground">{title}</span>
         {open ? <ChevronUp className="w-4 h-4 text-orbi-muted" /> : <ChevronDown className="w-4 h-4 text-orbi-muted" />}
       </button>
       {open && <div className="px-5 pb-5 border-t border-orbi-border/60 pt-4">{children}</div>}
@@ -51,7 +51,7 @@ function Row({ label, value }: { label: string; value: string }) {
     <div className="flex gap-3 py-2 border-b border-orbi-border/50 last:border-0">
       <span className="text-xs text-orbi-muted w-32 shrink-0 pt-0.5">{label}</span>
       <div className="flex-1 flex items-start gap-2">
-        <span className="text-sm text-slate-300 leading-relaxed flex-1">{value}</span>
+        <span className="text-sm text-foreground/80 leading-relaxed flex-1">{value}</span>
         <CopyButton text={value} />
       </div>
     </div>
@@ -179,7 +179,7 @@ export default function TeamBriefingForm() {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
         <AlertCircle className="w-8 h-8 text-rose-500" />
-        <p className="text-slate-300 text-sm">{projectError ?? "Proyecto no encontrado"}</p>
+        <p className="text-foreground/80 text-sm">{projectError ?? "Proyecto no encontrado"}</p>
         <Button onClick={() => router.push("/dashboard")} size="sm">Volver al dashboard</Button>
       </div>
     );
@@ -196,7 +196,7 @@ export default function TeamBriefingForm() {
         </div>
         <button
           onClick={() => project && navigator.clipboard.writeText(buildMarkdown(project))}
-          className="shrink-0 flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-orbi-border-light text-slate-300 hover:border-slate-500 hover:text-white transition-colors"
+          className="shrink-0 flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-orbi-border-light text-foreground/80 hover:border-slate-500 hover:text-foreground transition-colors"
         >
           <Download className="w-3.5 h-3.5" /> Copiar Markdown
         </button>
@@ -220,7 +220,7 @@ export default function TeamBriefingForm() {
           <div className="space-y-5">
             {audiences.map((a, i) => (
               <div key={a.id} className={i > 0 ? "pt-5 border-t border-orbi-border" : ""}>
-                <p className="text-sm font-semibold text-white mb-2">{a.name}</p>
+                <p className="text-sm font-semibold text-foreground mb-2">{a.name}</p>
                 <Row label="Rol" value={a.role} />
                 <Row label="JTBD" value={a.jtbd} />
                 <Row label="Dolores" value={a.topPains.join(" · ")} />
@@ -237,14 +237,14 @@ export default function TeamBriefingForm() {
         <Section icon={<Search className="w-4 h-4 text-yellow-400" />} title={`Keywords (${keywords.length})`} color="bg-yellow-950/40">
           <div className="flex flex-wrap gap-2">
             {keywords.map((kw, i) => (
-              <span key={i} className="text-xs bg-orbi-card text-slate-300 border border-orbi-border-light rounded-full px-2.5 py-1">
+              <span key={i} className="text-xs bg-orbi-card text-foreground/80 border border-orbi-border-light rounded-full px-2.5 py-1">
                 {kw}
               </span>
             ))}
           </div>
           <button
             onClick={() => navigator.clipboard.writeText(keywords.join("\n"))}
-            className="mt-3 flex items-center gap-1.5 text-xs text-orbi-muted hover:text-slate-300 transition-colors"
+            className="mt-3 flex items-center gap-1.5 text-xs text-orbi-muted hover:text-foreground/80 transition-colors"
           >
             <Copy className="w-3.5 h-3.5" /> Copiar todas
           </button>
@@ -258,7 +258,7 @@ export default function TeamBriefingForm() {
             {selectedAds.map(ad => (
               <div key={ad.id} className="rounded-lg border border-orbi-border p-3 space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-white">{ad.angleLabel}</span>
+                  <span className="text-xs font-semibold text-foreground">{ad.angleLabel}</span>
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-orbi-card text-orbi-muted">{ad.platform === "google" ? "Google Ads" : "Meta Ads"}</span>
                 </div>
                 {ad.headlines && (
@@ -294,11 +294,11 @@ export default function TeamBriefingForm() {
             {selectedPosts.map(post => (
               <div key={post.id} className="rounded-lg border border-orbi-border p-3 space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-white">{post.pillarLabel}</span>
+                  <span className="text-xs font-semibold text-foreground">{post.pillarLabel}</span>
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-orbi-card text-orbi-muted capitalize">{post.platform} · {post.format}</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <p className="text-xs text-slate-300 flex-1 leading-relaxed"><strong className="text-orbi-muted">Hook:</strong> {post.hook}</p>
+                  <p className="text-xs text-foreground/80 flex-1 leading-relaxed"><strong className="text-orbi-muted">Hook:</strong> {post.hook}</p>
                   <CopyButton text={`${post.hook}\n\n${post.body}\n\n${post.cta}`} />
                 </div>
               </div>

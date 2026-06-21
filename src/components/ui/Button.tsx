@@ -14,13 +14,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           "inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
           {
-            "bg-orbi-primary hover:bg-orbi-primary-hover text-white shadow-sm hover:shadow-emerald-500/20 hover:shadow-md":
+            "bg-orbi-primary hover:bg-orbi-primary-hover text-foreground shadow-sm hover:shadow-emerald-500/20 hover:shadow-md":
               variant === "primary",
-            "bg-white/10 hover:bg-white/20 text-white border border-white/20":
+            "bg-white/10 hover:bg-white/20 text-foreground border border-white/20":
               variant === "secondary",
-            "hover:bg-white/5 text-orbi-muted hover:text-white":
+            "hover:bg-white/5 text-orbi-muted hover:text-foreground":
               variant === "ghost",
-            "bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-white shadow-sm":
+            "bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-foreground shadow-sm":
               variant === "gold",
           },
           {

@@ -51,15 +51,15 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
           <div className="p-2 rounded-xl bg-orbi-primary">
-            <Orbit className="w-6 h-6 text-white" />
+            <Orbit className="w-6 h-6 text-foreground" />
           </div>
           <div className="text-left">
-            <p className="text-xl font-bold text-white tracking-tight">Orbi</p>
+            <p className="text-xl font-bold text-foreground tracking-tight">Orbi</p>
             <p className="text-[11px] text-orbi-muted leading-none">by Life26</p>
           </div>
         </div>
 
-        <h1 className="text-lg font-semibold text-white mb-1 text-center">
+        <h1 className="text-lg font-semibold text-foreground mb-1 text-center">
           {mode === "signup" ? "Crear cuenta" : "Bienvenido a Orbi"}
         </h1>
         <p className="text-sm text-orbi-muted mb-6 text-center leading-relaxed">
@@ -92,7 +92,7 @@ export default function LoginPage() {
           <div className="flex gap-2">
             <button
               onClick={() => setMode("login")}
-              className="flex-1 py-2.5 text-sm font-medium text-slate-300 bg-orbi-card hover:bg-orbi-primary rounded-lg transition-colors"
+              className="flex-1 py-2.5 text-sm font-medium text-foreground/80 bg-orbi-card hover:bg-orbi-primary rounded-lg transition-colors"
             >
               Iniciar sesión
             </button>
@@ -111,7 +111,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-orbi-card border border-orbi-border-light rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orbi-accent transition-colors"
+              className="w-full px-4 py-3 bg-orbi-card border border-orbi-border-light rounded-xl text-foreground text-sm placeholder-slate-500 focus:outline-none focus:border-orbi-accent transition-colors"
             />
             <input
               type="password"
@@ -120,7 +120,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-3 bg-orbi-card border border-orbi-border-light rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orbi-accent transition-colors"
+              className="w-full px-4 py-3 bg-orbi-card border border-orbi-border-light rounded-xl text-foreground text-sm placeholder-slate-500 focus:outline-none focus:border-orbi-accent transition-colors"
             />
 
             {error && <p className="text-xs text-rose-400">{error}</p>}
@@ -129,7 +129,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-orbi-primary hover:bg-orbi-primary disabled:opacity-50 text-white font-semibold rounded-xl transition-colors text-sm"
+              className="w-full py-3 bg-orbi-primary hover:bg-orbi-primary disabled:opacity-50 text-foreground font-semibold rounded-xl transition-colors text-sm"
             >
               {loading ? "Procesando..." : mode === "signup" ? "Crear cuenta" : "Iniciar sesión"}
             </button>

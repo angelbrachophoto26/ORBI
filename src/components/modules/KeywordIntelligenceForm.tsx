@@ -85,11 +85,11 @@ function KeywordRow({
           kw.selected ? "border-orbi-accent bg-orbi-primary" : "border-slate-600"
         }`}
       >
-        {kw.selected && <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />}
+        {kw.selected && <Check className="w-2.5 h-2.5 text-foreground" strokeWidth={3} />}
       </div>
 
       {/* Keyword phrase */}
-      <span className={`flex-1 text-sm ${kw.selected ? "text-white" : "text-slate-300"}`}>
+      <span className={`flex-1 text-sm ${kw.selected ? "text-white" : "text-foreground/80"}`}>
         {kw.phrase}
       </span>
 
@@ -250,7 +250,7 @@ export default function KeywordIntelligenceForm() {
           </div>
         </div>
         <div className="text-center">
-          <p className="text-slate-300 font-medium text-sm">Mapeando tu universo de keywords...</p>
+          <p className="text-foreground/80 font-medium text-sm">Mapeando tu universo de keywords...</p>
           <p className="text-orbi-muted text-xs mt-1">Organizando por intención de búsqueda</p>
         </div>
         <div className="w-full space-y-3 mt-2">
@@ -266,7 +266,7 @@ export default function KeywordIntelligenceForm() {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
         <AlertCircle className="w-8 h-8 text-rose-500" />
-        <p className="text-slate-300 text-sm">{displayError}</p>
+        <p className="text-foreground/80 text-sm">{displayError}</p>
         <Button onClick={() => router.push("/dashboard")} size="sm">
           Volver al dashboard
         </Button>
@@ -291,7 +291,7 @@ export default function KeywordIntelligenceForm() {
           </p>
         </div>
         <div className="shrink-0 text-right">
-          <span className="text-2xl font-bold text-white">{totalSelected}</span>
+          <span className="text-2xl font-bold text-foreground">{totalSelected}</span>
           <p className="text-[10px] text-orbi-secondary mt-0.5">seleccionadas</p>
         </div>
       </div>

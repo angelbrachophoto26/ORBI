@@ -131,7 +131,7 @@ export default function ProductBriefForm() {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
         <AlertCircle className="w-8 h-8 text-rose-500" />
-        <p className="text-slate-300 text-sm">{projectError ?? "No se encontró el proyecto."}</p>
+        <p className="text-foreground/80 text-sm">{projectError ?? "No se encontró el proyecto."}</p>
         <Button onClick={() => router.push("/dashboard")} size="sm">
           Volver al dashboard
         </Button>

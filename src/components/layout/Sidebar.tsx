@@ -67,7 +67,7 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
                   <p className={cn("text-sm font-medium truncate", isActive && "text-orbi-accent")}>
                     {mod.title}
                   </p>
-                  <p className="text-[11px] text-orbi-secondary truncate">{mod.description}</p>
+                  <p className="text-[11px] text-white/50 truncate">{mod.description}</p>
                 </div>
                 {mod.status === "completed" && (
                   <CheckCircle2 className="w-3.5 h-3.5 text-orbi-accent shrink-0 ml-auto" />
@@ -121,13 +121,13 @@ export default function Sidebar() {
   return (
     <>
       {/* ── Desktop sidebar ─────────────────────────────────── */}
-      <aside className="hidden md:flex w-64 shrink-0 h-screen flex-col bg-orbi-bg border-r border-orbi-border">
+      <aside className="hidden md:flex w-64 shrink-0 h-screen flex-col bg-orbi-primary border-r border-orbi-primary-hover">
         <div className="px-5 py-5 border-b border-orbi-border">
           <Logo />
         </div>
         <NavItems />
         <div className="px-5 py-4 border-t border-orbi-border">
-          <p className="text-[11px] text-orbi-secondary">Life26 · 2026</p>
+          <p className="text-[11px] text-white/40">Life26 · 2026</p>
         </div>
       </aside>
 
@@ -154,7 +154,7 @@ export default function Sidebar() {
       {/* ── Mobile drawer ───────────────────────────────────── */}
       <div
         className={cn(
-          "md:hidden fixed top-0 left-0 bottom-0 z-50 w-72 flex flex-col bg-orbi-bg border-r border-orbi-border",
+          "md:hidden fixed top-0 left-0 bottom-0 z-50 w-72 flex flex-col bg-orbi-primary border-r border-orbi-primary-hover",
           "transition-transform duration-300 ease-out",
           open ? "translate-x-0" : "-translate-x-full"
         )}
@@ -171,7 +171,7 @@ export default function Sidebar() {
         </div>
         <NavItems onNavigate={() => setOpen(false)} />
         <div className="px-5 py-4 border-t border-orbi-border">
-          <p className="text-[11px] text-orbi-secondary">Life26 · 2026</p>
+          <p className="text-[11px] text-white/40">Life26 · 2026</p>
         </div>
       </div>
     </>

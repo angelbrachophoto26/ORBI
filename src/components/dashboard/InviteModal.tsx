@@ -67,11 +67,11 @@ export default function InviteModal({ projectId, projectName, onClose }: Props) 
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
             <UserPlus className="w-5 h-5 text-orbi-accent" />
-            <h2 className="text-white font-semibold">Invitar colaborador</h2>
+            <h2 className="text-foreground font-semibold">Invitar colaborador</h2>
           </div>
           <button
             onClick={onClose}
-            className="text-orbi-muted hover:text-slate-300 transition-colors"
+            className="text-orbi-muted hover:text-foreground/80 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -87,9 +87,9 @@ export default function InviteModal({ projectId, projectName, onClose }: Props) 
             <div className="w-12 h-12 rounded-full bg-emerald-900/40 border border-emerald-700/40 flex items-center justify-center">
               <Check className="w-6 h-6 text-orbi-accent" />
             </div>
-            <p className="text-white font-medium">Invitación enviada</p>
+            <p className="text-foreground font-medium">Invitación enviada</p>
             <p className="text-sm text-orbi-muted text-center">
-              Le enviamos un email a <strong className="text-slate-300">{email}</strong> con el link para unirse.
+              Le enviamos un email a <strong className="text-foreground/80">{email}</strong> con el link para unirse.
             </p>
             <button
               onClick={() => { setSent(false); setEmail(""); }}
@@ -108,7 +108,7 @@ export default function InviteModal({ projectId, projectName, onClose }: Props) 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-3 bg-orbi-card border border-orbi-border-light rounded-xl text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orbi-accent transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-orbi-card border border-orbi-border-light rounded-xl text-foreground text-sm placeholder-slate-500 focus:outline-none focus:border-orbi-accent transition-colors"
               />
             </div>
 
@@ -117,7 +117,7 @@ export default function InviteModal({ projectId, projectName, onClose }: Props) 
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-orbi-primary hover:bg-orbi-primary disabled:opacity-50 text-white font-semibold rounded-xl transition-colors text-sm"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-orbi-primary hover:bg-orbi-primary disabled:opacity-50 text-foreground font-semibold rounded-xl transition-colors text-sm"
             >
               <Send className="w-4 h-4" />
               {loading ? "Enviando..." : "Enviar invitación"}

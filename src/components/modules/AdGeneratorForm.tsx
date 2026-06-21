@@ -56,7 +56,7 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="p-1 rounded text-orbi-secondary hover:text-slate-300 hover:bg-orbi-primary transition-colors"
+      className="p-1 rounded text-orbi-secondary hover:text-foreground/80 hover:bg-orbi-primary transition-colors"
       title="Copiar"
     >
       {copied ? <Check className="w-3.5 h-3.5 text-orbi-accent" /> : <Copy className="w-3.5 h-3.5" />}
@@ -88,7 +88,7 @@ function GoogleAdCard({ ad, onToggle, onRegenerate, regenerating }: {
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={onToggle}>
         <div className={`shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${ad.selected ? "border-blue-500 bg-blue-500" : "border-slate-600"}`}>
-          {ad.selected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+          {ad.selected && <Check className="w-3 h-3 text-foreground" strokeWidth={3} />}
         </div>
         <span className="text-lg">{ANGLE_ICONS[ad.angle]}</span>
         <div className="flex-1">
@@ -100,7 +100,7 @@ function GoogleAdCard({ ad, onToggle, onRegenerate, regenerating }: {
           <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-orbi-secondary hover:text-blue-400 hover:bg-blue-400/10 transition-colors" title="Regenerar">
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
-          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-orbi-muted hover:text-slate-300 transition-colors">
+          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-orbi-muted hover:text-foreground/80 transition-colors">
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
         </div>
@@ -115,7 +115,7 @@ function GoogleAdCard({ ad, onToggle, onRegenerate, regenerating }: {
               {(ad.headlines ?? []).map((h, i) => (
                 <div key={i} className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
                   <span className="text-[10px] text-orbi-secondary w-4 shrink-0">{i + 1}</span>
-                  <span className="flex-1 text-sm text-slate-200">{h}</span>
+                  <span className="flex-1 text-sm text-foreground/70">{h}</span>
                   <CharBadge text={h} limit={30} />
                   <CopyButton text={h} />
                 </div>
@@ -129,7 +129,7 @@ function GoogleAdCard({ ad, onToggle, onRegenerate, regenerating }: {
               {(ad.descriptions ?? []).map((d, i) => (
                 <div key={i} className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
                   <span className="text-[10px] text-orbi-secondary w-4 shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="flex-1 text-sm text-slate-300 leading-relaxed">{d}</span>
+                  <span className="flex-1 text-sm text-foreground/80 leading-relaxed">{d}</span>
                   <div className="flex items-start gap-1 shrink-0 mt-0.5">
                     <CharBadge text={d} limit={90} />
                     <CopyButton text={d} />
@@ -158,7 +158,7 @@ function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={onToggle}>
         <div className={`shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${ad.selected ? "border-purple-500 bg-purple-500" : "border-slate-600"}`}>
-          {ad.selected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+          {ad.selected && <Check className="w-3 h-3 text-foreground" strokeWidth={3} />}
         </div>
         <span className="text-lg">{ANGLE_ICONS[ad.angle]}</span>
         <div className="flex-1">
@@ -170,7 +170,7 @@ function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
           <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-orbi-secondary hover:text-purple-400 hover:bg-purple-400/10 transition-colors" title="Regenerar">
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
-          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-orbi-muted hover:text-slate-300 transition-colors">
+          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-orbi-muted hover:text-foreground/80 transition-colors">
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
         </div>
@@ -182,7 +182,7 @@ function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
           <div>
             <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Primary Text (máx. 125 car.)</p>
             <div className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-              <span className="flex-1 text-sm text-slate-200 leading-relaxed">{ad.primaryText}</span>
+              <span className="flex-1 text-sm text-foreground/70 leading-relaxed">{ad.primaryText}</span>
               <div className="flex items-start gap-1 shrink-0">
                 <CharBadge text={ad.primaryText ?? ""} limit={125} />
                 <CopyButton text={ad.primaryText ?? ""} />
@@ -193,7 +193,7 @@ function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
           <div>
             <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Headline (máx. 40 car.)</p>
             <div className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-              <span className="flex-1 text-sm text-slate-200 font-medium">{ad.headline}</span>
+              <span className="flex-1 text-sm text-foreground/70 font-medium">{ad.headline}</span>
               <CharBadge text={ad.headline ?? ""} limit={40} />
               <CopyButton text={ad.headline ?? ""} />
             </div>
@@ -202,7 +202,7 @@ function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
           <div>
             <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Description (máx. 30 car.)</p>
             <div className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-              <span className="flex-1 text-sm text-slate-300">{ad.description}</span>
+              <span className="flex-1 text-sm text-foreground/80">{ad.description}</span>
               <CharBadge text={ad.description ?? ""} limit={30} />
               <CopyButton text={ad.description ?? ""} />
             </div>
@@ -342,7 +342,7 @@ export default function AdGeneratorForm() {
           </div>
         </div>
         <div className="text-center">
-          <p className="text-slate-300 font-medium text-sm">Generando copies para {platform === "google" ? "Google Ads" : "Meta Ads"}…</p>
+          <p className="text-foreground/80 font-medium text-sm">Generando copies para {platform === "google" ? "Google Ads" : "Meta Ads"}…</p>
           <p className="text-orbi-muted text-xs mt-1">5 ángulos × plataforma — 10–15 seg</p>
         </div>
         <div className="w-full space-y-3 mt-2">
@@ -359,7 +359,7 @@ export default function AdGeneratorForm() {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
         <AlertCircle className="w-8 h-8 text-rose-500" />
-        <p className="text-slate-300 text-sm">{displayError}</p>
+        <p className="text-foreground/80 text-sm">{displayError}</p>
         <Button onClick={() => router.push("/dashboard")} size="sm">Volver al dashboard</Button>
       </div>
     );
@@ -381,7 +381,7 @@ export default function AdGeneratorForm() {
                 className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition-all ${
                   active
                     ? `${m.bg} ${m.border} ${m.color}`
-                    : "border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-slate-300"
+                    : "border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80"
                 }`}
               >
                 {m.label}
@@ -390,7 +390,7 @@ export default function AdGeneratorForm() {
           })}
           <button
             onClick={() => generate(platform)}
-            className="ml-auto text-xs px-3 py-1.5 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-slate-300 transition-all flex items-center gap-1.5"
+            className="ml-auto text-xs px-3 py-1.5 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80 transition-all flex items-center gap-1.5"
           >
             <RefreshCw className="w-3 h-3" />
             Regenerar todo
@@ -405,7 +405,7 @@ export default function AdGeneratorForm() {
           Puedes copiar cualquier elemento individualmente.
         </p>
         <div className="shrink-0 text-right">
-          <span className="text-2xl font-bold text-white">{selectedCount}</span>
+          <span className="text-2xl font-bold text-foreground">{selectedCount}</span>
           <p className="text-[10px] text-orbi-secondary mt-0.5">seleccionados</p>
         </div>
       </div>

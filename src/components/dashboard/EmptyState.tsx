@@ -16,7 +16,7 @@ export default function EmptyState({ onCreate }: EmptyStateProps) {
           <Sparkles className="w-3 h-3 text-yellow-500" />
         </div>
       </div>
-      <h3 className="text-xl font-semibold text-white mb-2">
+      <h3 className="text-xl font-semibold text-foreground mb-2">
         Crea tu primer proyecto
       </h3>
       <p className="text-orbi-muted text-sm max-w-sm mb-8 leading-relaxed">

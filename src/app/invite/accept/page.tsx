@@ -41,7 +41,7 @@ function AcceptInviteContent() {
   return (
     <div className="min-h-screen bg-orbi-bg flex flex-col items-center justify-center gap-4">
       <div className="p-2 rounded-xl bg-orbi-primary">
-        <Orbit className="w-6 h-6 text-white" />
+        <Orbit className="w-6 h-6 text-foreground" />
       </div>
 
       {status === "loading" && (
@@ -54,14 +54,14 @@ function AcceptInviteContent() {
       {status === "success" && (
         <div className="flex flex-col items-center gap-2">
           <Check className="w-8 h-8 text-orbi-accent" />
-          <p className="text-white font-medium">¡Invitación aceptada!</p>
+          <p className="text-foreground font-medium">¡Invitación aceptada!</p>
           <p className="text-sm text-orbi-muted">Entrando al proyecto...</p>
         </div>
       )}
 
       {status === "login" && (
         <div className="flex flex-col items-center gap-2 text-center">
-          <p className="text-white font-medium">Necesitas iniciar sesión primero</p>
+          <p className="text-foreground font-medium">Necesitas iniciar sesión primero</p>
           <p className="text-sm text-orbi-muted">Redirigiendo al login...</p>
         </div>
       )}
@@ -69,7 +69,7 @@ function AcceptInviteContent() {
       {status === "error" && (
         <div className="flex flex-col items-center gap-2 text-center">
           <AlertCircle className="w-8 h-8 text-rose-500" />
-          <p className="text-white font-medium">Invitación inválida o expirada</p>
+          <p className="text-foreground font-medium">Invitación inválida o expirada</p>
           <button
             onClick={() => router.push("/dashboard")}
             className="text-sm text-orbi-accent hover:text-orbi-accent mt-2"

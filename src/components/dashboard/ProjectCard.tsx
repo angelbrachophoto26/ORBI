@@ -100,7 +100,7 @@ export default function ProjectCard({ project, onDelete, onInvite, isShared }: P
 
       {/* Header */}
       <div className="mb-4 pr-6">
-        <h3 className="text-base font-semibold text-white truncate group-hover:text-orbi-accent transition-colors">
+        <h3 className="text-base font-semibold text-foreground truncate group-hover:text-orbi-accent transition-colors">
           {project.productBrief?.productName ?? "Sin nombre"}
         </h3>
         <div className="flex items-center gap-3 mt-1.5">

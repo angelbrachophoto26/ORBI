@@ -46,7 +46,7 @@ export default function ModulePanel({ what, how, next, extra, className }: Modul
         )}
         <button
           onClick={toggle}
-          className="p-1.5 rounded-md text-orbi-muted hover:text-slate-300 hover:bg-orbi-card transition-colors"
+          className="p-1.5 rounded-md text-orbi-muted hover:text-foreground/80 hover:bg-orbi-card transition-colors"
           title={open ? "Colapsar panel" : "Expandir panel"}
         >
           {open ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -96,9 +96,9 @@ export default function ModulePanel({ what, how, next, extra, className }: Modul
           <div>
             <div className="flex items-center gap-2 mb-2">
               <div className="p-1 rounded-md bg-orbi-primary">
-                <ArrowRight className="w-3.5 h-3.5 text-slate-300" />
+                <ArrowRight className="w-3.5 h-3.5 text-foreground/80" />
               </div>
-              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-foreground/80 uppercase tracking-wider">
                 ¿Qué sigue?
               </span>
             </div>
@@ -130,9 +130,9 @@ export function KeywordTip() {
       </div>
       <p className="text-xs text-orbi-muted leading-relaxed">
         Los keywords modernos no son palabras sueltas sino{" "}
-        <strong className="text-slate-300">frases completas</strong> que la gente escribe en Google.
+        <strong className="text-foreground/80">frases completas</strong> que la gente escribe en Google.
       </p>
-      <div className="mt-2.5 rounded-md bg-orbi-card/60 border border-orbi-border-light/50 px-3 py-2">
+      <div className="mt-2.5 rounded-md bg-orbi-card border border-orbi-border-light/50 px-3 py-2">
         <p className="text-[11px] text-orbi-muted mb-1">En vez de:</p>
         <p className="text-xs text-orbi-muted line-through">mayores</p>
         <p className="text-[11px] text-orbi-muted mt-1.5 mb-1">Usa:</p>
@@ -142,7 +142,7 @@ export function KeywordTip() {
       </div>
       <p className="text-xs text-orbi-muted leading-relaxed mt-2.5">
         A estas frases se les llama{" "}
-        <strong className="text-slate-300">long-tail keywords</strong> — tienen menos competencia
+        <strong className="text-foreground/80">long-tail keywords</strong> — tienen menos competencia
         y más intención de compra, perfectas para marcas nuevas.
       </p>
       <p className="text-xs text-orbi-muted leading-relaxed mt-2">

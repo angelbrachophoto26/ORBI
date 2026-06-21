@@ -3,23 +3,23 @@
 @tailwind utilities;
 
 :root {
-  --background: #08151f;
-  --foreground: #f0eeea;
-  --orbi-bg: #08151f;
-  --orbi-surface: #0f1e2a;
-  --orbi-card: #162535;
+  --background: #f5f4f0;
+  --foreground: #1a2832;
+  --orbi-bg: #f5f4f0;
+  --orbi-surface: #ffffff;
+  --orbi-card: #eceae4;
   --orbi-primary: #223f53;
   --orbi-primary-hover: #2d5470;
-  --orbi-accent: #d4cb99;
-  --orbi-accent-dim: #b8af82;
+  --orbi-accent: #b8a96a;
+  --orbi-accent-dim: #9e9056;
   --orbi-secondary: #59574d;
-  --orbi-muted: #b1bac6;
-  --orbi-border: #1a3347;
-  --orbi-border-light: #223f53;
+  --orbi-muted: #6b7a87;
+  --orbi-border: #ddd9d0;
+  --orbi-border-light: #c8c4bb;
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -31,7 +31,7 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #223f53 transparent;
+  scrollbar-color: #c8c4bb transparent;
 }
 
 *::-webkit-scrollbar {
@@ -44,6 +44,6 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #223f53;
+  background: #c8c4bb;
   border-radius: 9999px;
 }

@@ -39,7 +39,7 @@ export default function AuthConfirmPage() {
   return (
     <div className="min-h-screen bg-orbi-bg flex flex-col items-center justify-center gap-4">
       <div className="p-2 rounded-xl bg-orbi-primary">
-        <Orbit className="w-6 h-6 text-white" />
+        <Orbit className="w-6 h-6 text-foreground" />
       </div>
       <div className="flex flex-col items-center gap-2">
         <div className="w-6 h-6 border-2 border-orbi-accent border-t-transparent rounded-full animate-spin" />

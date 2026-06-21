@@ -52,7 +52,7 @@ function CopyButton({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 1500);
   }
   return (
-    <button onClick={handleCopy} className="p-1 rounded text-orbi-secondary hover:text-slate-300 hover:bg-orbi-primary transition-colors" title="Copiar">
+    <button onClick={handleCopy} className="p-1 rounded text-orbi-secondary hover:text-foreground/80 hover:bg-orbi-primary transition-colors" title="Copiar">
       {copied ? <Check className="w-3.5 h-3.5 text-orbi-accent" /> : <Copy className="w-3.5 h-3.5" />}
     </button>
   );
@@ -79,7 +79,7 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={onToggle}>
         <div className={`shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${post.selected ? checkColor : "border-slate-600"}`}>
-          {post.selected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+          {post.selected && <Check className="w-3 h-3 text-foreground" strokeWidth={3} />}
         </div>
         <span className="text-lg">{PILLAR_ICONS[post.pillar]}</span>
         <div className="flex-1 min-w-0">
@@ -95,7 +95,7 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
           <CopyButton text={fullText} />
-          <button onClick={(e) => { e.stopPropagation(); setExpanded(v => !v); }} className="text-orbi-muted hover:text-slate-300 transition-colors">
+          <button onClick={(e) => { e.stopPropagation(); setExpanded(v => !v); }} className="text-orbi-muted hover:text-foreground/80 transition-colors">
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
         </div>
@@ -107,7 +107,7 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
           <div>
             <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">Hook — para el scroll</p>
             <div className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-              <p className="flex-1 text-sm text-white font-medium leading-relaxed">{post.hook}</p>
+              <p className="flex-1 text-sm text-foreground font-medium leading-relaxed">{post.hook}</p>
               <CopyButton text={post.hook} />
             </div>
           </div>
@@ -116,7 +116,7 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
           <div>
             <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">Cuerpo</p>
             <div className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-              <p className="flex-1 text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">{post.body}</p>
+              <p className="flex-1 text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">{post.body}</p>
               <CopyButton text={post.body} />
             </div>
           </div>
@@ -153,7 +153,7 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
                 {post.carouselSlides.map((slide, i) => (
                   <div key={i} className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
                     <span className="text-[10px] text-orbi-secondary w-5 shrink-0 font-mono">{i + 1}</span>
-                    <span className="flex-1 text-xs text-slate-300">{slide}</span>
+                    <span className="flex-1 text-xs text-foreground/80">{slide}</span>
                     <CopyButton text={slide} />
                   </div>
                 ))}
@@ -175,7 +175,7 @@ function PostCard({ post, platform, onToggle, onRegenerate, regenerating }: {
           {/* Copy all */}
           <button
             onClick={() => navigator.clipboard.writeText(fullText)}
-            className="w-full text-xs text-orbi-muted hover:text-slate-300 border border-orbi-border hover:border-orbi-border-light rounded-lg py-2 transition-colors flex items-center justify-center gap-1.5"
+            className="w-full text-xs text-orbi-muted hover:text-foreground/80 border border-orbi-border hover:border-orbi-border-light rounded-lg py-2 transition-colors flex items-center justify-center gap-1.5"
           >
             <Copy className="w-3.5 h-3.5" /> Copiar post completo
           </button>
@@ -290,7 +290,7 @@ export default function PostGeneratorForm() {
           </div>
         </div>
         <div className="text-center">
-          <p className="text-slate-300 font-medium text-sm">Generando posts para {PLATFORM_META[platform].label}…</p>
+          <p className="text-foreground/80 font-medium text-sm">Generando posts para {PLATFORM_META[platform].label}…</p>
           <p className="text-orbi-muted text-xs mt-1">5 pilares de contenido — 10–15 seg</p>
         </div>
         <div className="w-full space-y-3 mt-2">
@@ -304,7 +304,7 @@ export default function PostGeneratorForm() {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
         <AlertCircle className="w-8 h-8 text-rose-500" />
-        <p className="text-slate-300 text-sm">{projectError || error}</p>
+        <p className="text-foreground/80 text-sm">{projectError || error}</p>
         <Button onClick={() => router.push("/dashboard")} size="sm">Volver al dashboard</Button>
       </div>
     );
@@ -320,13 +320,13 @@ export default function PostGeneratorForm() {
           const active = platform === p;
           return (
             <button key={p} onClick={() => switchPlatform(p)}
-              className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all ${active ? `${m.bg} ${m.border} ${m.color}` : "border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-slate-300"}`}>
+              className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all ${active ? `${m.bg} ${m.border} ${m.color}` : "border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80"}`}>
               {m.icon} {m.label}
             </button>
           );
         })}
         <button onClick={() => generate(platform)}
-          className="ml-auto text-xs px-3 py-1.5 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-slate-300 transition-all flex items-center gap-1.5">
+          className="ml-auto text-xs px-3 py-1.5 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80 transition-all flex items-center gap-1.5">
           <RefreshCw className="w-3 h-3" /> Regenerar todo
         </button>
       </div>
@@ -337,7 +337,7 @@ export default function PostGeneratorForm() {
           Cada post cubre un <strong className="text-white">pilar de contenido</strong> distinto. Selecciona los que quieres guardar y copia cualquier elemento individualmente.
         </p>
         <div className="shrink-0 text-right">
-          <span className="text-2xl font-bold text-white">{selectedCount}</span>
+          <span className="text-2xl font-bold text-foreground">{selectedCount}</span>
           <p className="text-[10px] text-orbi-secondary mt-0.5">seleccionados</p>
         </div>
       </div>
