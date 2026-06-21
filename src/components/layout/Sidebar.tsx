@@ -129,11 +129,11 @@ export default function Sidebar() {
       </aside>
 
       {/* ── Mobile top bar ──────────────────────────────────── */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-40 h-14 flex items-center justify-between px-4 bg-orbi-bg border-b border-orbi-border">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 h-14 flex items-center justify-between px-4 bg-orbi-primary border-b border-orbi-primary-hover">
         <Logo />
         <button
           onClick={() => setOpen(true)}
-          className="p-2 rounded-lg text-orbi-muted hover:text-white hover:bg-orbi-card transition-colors"
+          className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-orbi-primary-hover transition-colors"
           aria-label="Abrir menú"
         >
           <Menu className="w-5 h-5" />
