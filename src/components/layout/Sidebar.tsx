@@ -87,8 +87,8 @@ function Logo() {
       <NextImage
         src="/logo.png"
         alt="Orbi"
-        width={32}
-        height={32}
+        width={83}
+        height={83}
         className="rounded-lg"
       />
       <div>
