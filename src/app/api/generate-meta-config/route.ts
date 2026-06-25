@@ -60,6 +60,11 @@ ${objectiveSection}
 INSTRUCCIONES CRÍTICAS:
 1. Genera valores MUY ESPECÍFICOS para este producto (no genéricos).
 2. Para "segmentación detallada": usa EXACTAMENTE los términos como aparecen en Meta Ads Manager (búscalos mentalmente).
+   REGLA CRÍTICA DE SEGMENTACIÓN: incluye ÚNICAMENTE intereses de CLIENTES POTENCIALES (personas que contratan o compran).
+   NUNCA incluyas perfiles del mismo sector profesional del usuario ni de su competencia directa.
+   Ejemplo correcto — si el producto es fotografía gastronómica: "Restaurantes", "Hostelería", "Gestión de restaurantes", "Dueños de pequeñas empresas", "Food & beverage".
+   Ejemplo INCORRECTO (prohibido): "Fotografía", "Fotógrafos profesionales", "Creadores de contenido".
+   Regla universal: segmenta siempre hacia quien COMPRA o CONTRATA, nunca hacia quien COMPITE.
 3. Para "presupuesto diario": da un rango realista en euros (€) con justificación de fase.
 4. Para "alcance estimado": estima un rango realista según localización y segmentación.
 5. Las "notas" son cortas (máx 12 palabras) y explican el porqué.
