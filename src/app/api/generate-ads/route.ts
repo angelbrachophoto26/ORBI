@@ -107,6 +107,8 @@ INSTRUCCIONES CRÍTICAS META ADS:
 - El primaryText debe empezar con un gancho emocional o pregunta que pare el scroll
 - Habla directamente al lector ("tú", "tu", "¿ya tienes...")
 - Usa el vocabulario real del cliente
+- Para el CTA elige el más apropiado según el objetivo del ángulo:
+  opciones exactas: "Enviar mensaje", "Más información", "Contactar", "Comprar ahora", "Registrarse", "Suscribirse", "Ver más"
 
 Responde SOLO con JSON válido:
 
@@ -117,35 +119,40 @@ Responde SOLO con JSON válido:
       "angleLabel": "Problema que resuelven",
       "primaryText": "gancho + copy max 125 chars",
       "headline": "headline max 40 chars",
-      "description": "descripción max 30 chars"
+      "description": "descripción max 30 chars",
+      "cta": "Enviar mensaje"
     },
     {
       "angle": "outcome",
       "angleLabel": "Resultado que obtienen",
       "primaryText": "...",
       "headline": "...",
-      "description": "..."
+      "description": "...",
+      "cta": "Más información"
     },
     {
       "angle": "social_proof",
       "angleLabel": "Prueba social",
       "primaryText": "...",
       "headline": "...",
-      "description": "..."
+      "description": "...",
+      "cta": "Contactar"
     },
     {
       "angle": "curiosity",
       "angleLabel": "Curiosidad",
       "primaryText": "...",
       "headline": "...",
-      "description": "..."
+      "description": "...",
+      "cta": "Más información"
     },
     {
       "angle": "urgency",
       "angleLabel": "Urgencia / Oferta",
       "primaryText": "...",
       "headline": "...",
-      "description": "..."
+      "description": "...",
+      "cta": "Comprar ahora"
     }
   ]
 }`;
@@ -182,6 +189,7 @@ export async function POST(req: NextRequest) {
         primaryText?: string;
         headline?: string;
         description?: string;
+        cta?: string;
       }>;
     };
 
@@ -195,6 +203,7 @@ export async function POST(req: NextRequest) {
       primaryText: a.primaryText,
       headline: a.headline,
       description: a.description,
+      cta: a.cta,
       selected: false,
     }));
 

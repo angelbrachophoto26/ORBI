@@ -81,7 +81,37 @@ export interface AdVariant {
   primaryText?: string;  // up to 125 chars visible
   headline?: string;     // max 40 chars
   description?: string;  // max 30 chars
+  cta?: string;          // Meta: "Enviar mensaje" | "Más información" | etc.
   selected: boolean;
+}
+
+export interface MetaAdsConfigField {
+  value: string;
+  note: string;
+}
+
+export interface MetaAdsConfig {
+  campaign: {
+    campaignName: MetaAdsConfigField;
+    objective: MetaAdsConfigField;
+    specialCategories: MetaAdsConfigField;
+  };
+  adSet: {
+    messageDestination: MetaAdsConfigField;
+    location: MetaAdsConfigField;
+    ageRange: MetaAdsConfigField;
+    gender: MetaAdsConfigField;
+    detailedTargeting: MetaAdsConfigField;
+    languages: MetaAdsConfigField;
+    dailyBudget: MetaAdsConfigField;
+    duration: MetaAdsConfigField;
+    placements: MetaAdsConfigField;
+  };
+  ad: {
+    format: MetaAdsConfigField;
+    advertiserName: MetaAdsConfigField;
+    creativeDescription: MetaAdsConfigField;
+  };
 }
 
 export interface BlogSection {
@@ -110,6 +140,7 @@ export interface OrbiProject {
   selectedAudienceIds?: string[];
   keywords?: import("@/lib/generateKeywords").KeywordCluster[];
   ads?: AdVariant[];
+  metaAdsConfig?: MetaAdsConfig;
   posts?: SocialPost[];
   article?: BlogArticle;
   completedModules: ModuleSlug[];
