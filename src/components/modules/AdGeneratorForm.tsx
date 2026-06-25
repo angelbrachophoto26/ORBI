@@ -287,10 +287,21 @@ export default function AdGeneratorForm() {
     if (projectLoading || !project) return;
     if (!project.productBrief) { setError("Completa el Product Brief primero."); setPhase("config"); return; }
 
-    if (project.metaAdsConfig) {
-      setConfig(project.metaAdsConfig);
+    // Validate cached config has the new structure (arrays, not old nested objects)
+    const cached = project.metaAdsConfig;
+    const isValid = cached &&
+      cached.objective?.id &&
+      Array.isArray(cached.campaign) &&
+      Array.isArray(cached.adSet) &&
+      Array.isArray(cached.ad) &&
+      cached.summary?.objective;
+
+    if (isValid) {
+      setConfig(cached);
       setPhase("config");
     } else {
+      // Clear stale/incompatible cache and regenerate
+      if (cached) setActiveProject({ ...project, metaAdsConfig: undefined });
       generateAll();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
