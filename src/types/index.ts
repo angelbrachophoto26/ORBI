@@ -85,33 +85,32 @@ export interface AdVariant {
   selected: boolean;
 }
 
-export interface MetaAdsConfigField {
+export interface MetaField {
+  label: string;
   value: string;
   note: string;
 }
 
-export interface MetaAdsConfig {
-  campaign: {
-    campaignName: MetaAdsConfigField;
-    objective: MetaAdsConfigField;
-    specialCategories: MetaAdsConfigField;
-  };
-  adSet: {
-    messageDestination: MetaAdsConfigField;
-    location: MetaAdsConfigField;
-    ageRange: MetaAdsConfigField;
-    gender: MetaAdsConfigField;
-    detailedTargeting: MetaAdsConfigField;
-    languages: MetaAdsConfigField;
-    dailyBudget: MetaAdsConfigField;
-    duration: MetaAdsConfigField;
-    placements: MetaAdsConfigField;
-  };
-  ad: {
-    format: MetaAdsConfigField;
-    advertiserName: MetaAdsConfigField;
-    creativeDescription: MetaAdsConfigField;
-  };
+export interface MetaAdsObjective {
+  id: string;
+  label: string;
+  reason: string;
+}
+
+export interface MetaAdsSummary {
+  objective: string;
+  audience: string;
+  budget: string;
+  format: string;
+  estimatedReach: string;
+}
+
+export interface MetaAdsFullConfig {
+  objective: MetaAdsObjective;
+  campaign: MetaField[];
+  adSet: MetaField[];
+  ad: MetaField[];
+  summary: MetaAdsSummary;
 }
 
 export interface BlogSection {
@@ -140,7 +139,7 @@ export interface OrbiProject {
   selectedAudienceIds?: string[];
   keywords?: import("@/lib/generateKeywords").KeywordCluster[];
   ads?: AdVariant[];
-  metaAdsConfig?: MetaAdsConfig;
+  metaAdsConfig?: MetaAdsFullConfig;
   posts?: SocialPost[];
   article?: BlogArticle;
   completedModules: ModuleSlug[];

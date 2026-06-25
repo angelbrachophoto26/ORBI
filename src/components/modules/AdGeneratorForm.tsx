@@ -1,30 +1,35 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { AdVariant, AdPlatform, MetaAdsConfig, ModuleSlug } from "@/types";
+import { MetaAdsFullConfig, MetaField, ModuleSlug } from "@/types";
 import { setActiveProject } from "@/lib/store";
-import { updateProjectProgress, saveAds } from "@/lib/supabase/projects";
+import { updateProjectProgress } from "@/lib/supabase/projects";
 import { useActiveProject } from "@/lib/useActiveProject";
 import Button from "@/components/ui/Button";
 import {
-  ArrowRight, Loader2, Copy, Check, AlertCircle, Megaphone,
-  RefreshCw, ChevronDown, ChevronUp, Sparkles, Settings2,
+  ArrowRight, Loader2, Copy, Check, AlertCircle,
+  Megaphone, RefreshCw, ChevronDown, ChevronUp,
+  Target, Settings2, FileText, Sparkles, Pencil,
 } from "lucide-react";
 
-/* ─── Helpers ─── */
+/* ─────────────────────────────── helpers ────────────────────────────────── */
 
-function CopyButton({ text }: { text: string }) {
+const ALL_OBJECTIVES = [
+  { id: "mensajes", label: "Mensajes" },
+  { id: "reconocimiento", label: "Reconocimiento" },
+  { id: "trafico", label: "Tráfico" },
+  { id: "interaccion", label: "Interacción" },
+  { id: "clientes_potenciales", label: "Clientes potenciales" },
+  { id: "ventas", label: "Ventas" },
+];
+
+function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
-  function handleCopy() {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  }
   return (
     <button
-      onClick={handleCopy}
-      className="p-1 rounded text-orbi-secondary hover:text-foreground/80 hover:bg-orbi-primary/20 transition-colors shrink-0"
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
+      className="p-1.5 rounded text-orbi-muted hover:text-foreground hover:bg-orbi-primary/20 transition-colors shrink-0"
       title="Copiar"
     >
       {copied ? <Check className="w-3.5 h-3.5 text-orbi-accent" /> : <Copy className="w-3.5 h-3.5" />}
@@ -32,371 +37,269 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-function CharBadge({ text, limit }: { text: string; limit: number }) {
-  const len = text.length;
-  const over = len > limit;
-  return (
-    <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono shrink-0 ${over ? "bg-rose-950/60 text-rose-400" : "bg-orbi-card text-orbi-muted"}`}>
-      {len}/{limit}
-    </span>
-  );
-}
+/* ─── Inline-editable field row ─── */
+function FieldRow({ field, onUpdate }: { field: MetaField; onUpdate: (v: string) => void }) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(field.value);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-const ANGLE_ICONS: Record<string, string> = {
-  pain: "🔥", outcome: "🎯", social_proof: "⭐", curiosity: "💡", urgency: "⚡",
-};
+  useEffect(() => { if (editing) inputRef.current?.focus(); }, [editing]);
 
-const PLATFORM_META = {
-  google: {
-    label: "Google Ads",
-    color: "text-blue-400",
-    bg: "bg-blue-950/30",
-    border: "border-blue-900/40",
-    badge: "bg-blue-500/10 text-blue-400",
-    activeBorder: "border-blue-600 bg-blue-950/10",
-  },
-  meta: {
-    label: "Meta Ads",
-    color: "text-purple-400",
-    bg: "bg-purple-950/30",
-    border: "border-purple-900/40",
-    badge: "bg-purple-500/10 text-purple-400",
-    activeBorder: "border-purple-600 bg-purple-950/10",
-  },
-} as const;
+  function commit() { onUpdate(draft); setEditing(false); }
 
-/* ─── Google Ad Card ─── */
-function GoogleAdCard({ ad, onToggle, onRegenerate, regenerating }: {
-  ad: AdVariant; onToggle: () => void; onRegenerate: () => void; regenerating: boolean;
-}) {
-  const [expanded, setExpanded] = useState(true);
-  const m = PLATFORM_META.google;
-  return (
-    <div className={`rounded-xl border transition-all ${ad.selected ? m.activeBorder : "border-orbi-border bg-orbi-surface/60"} ${regenerating ? "opacity-50 pointer-events-none" : ""}`}>
-      <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={onToggle}>
-        <div className={`shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${ad.selected ? "border-blue-500 bg-blue-500" : "border-slate-600"}`}>
-          {ad.selected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
-        </div>
-        <span className="text-lg">{ANGLE_ICONS[ad.angle]}</span>
-        <div className="flex-1 min-w-0">
-          <p className={`text-sm font-semibold truncate ${ad.selected ? "text-blue-300" : "text-foreground"}`}>{ad.angleLabel}</p>
-          <span className={`text-[10px] px-1.5 py-0.5 rounded ${m.badge}`}>{m.label}</span>
-        </div>
-        <div className="flex items-center gap-1 shrink-0">
-          {regenerating && <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />}
-          <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-orbi-secondary hover:text-blue-400 transition-colors" title="Regenerar">
-            <RefreshCw className="w-3.5 h-3.5" />
-          </button>
-          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-orbi-muted hover:text-foreground/80 transition-colors">
-            {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
-        </div>
-      </div>
-      {expanded && (
-        <div className="px-4 pb-4 space-y-4 border-t border-orbi-border/60 pt-3">
-          <div>
-            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Headlines (máx. 30 car.)</p>
-            <div className="space-y-2">
-              {(ad.headlines ?? []).map((h, i) => (
-                <div key={i} className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-                  <span className="text-[10px] text-orbi-secondary w-4 shrink-0">{i + 1}</span>
-                  <span className="flex-1 text-sm text-foreground/70">{h}</span>
-                  <CharBadge text={h} limit={30} />
-                  <CopyButton text={h} />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-2">Descriptions (máx. 90 car.)</p>
-            <div className="space-y-2">
-              {(ad.descriptions ?? []).map((d, i) => (
-                <div key={i} className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-                  <span className="text-[10px] text-orbi-secondary w-4 shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="flex-1 text-sm text-foreground/80 leading-relaxed">{d}</span>
-                  <div className="flex items-start gap-1 shrink-0 mt-0.5">
-                    <CharBadge text={d} limit={90} />
-                    <CopyButton text={d} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ─── Meta Ad Card ─── */
-function MetaAdCard({ ad, onToggle, onRegenerate, regenerating }: {
-  ad: AdVariant; onToggle: () => void; onRegenerate: () => void; regenerating: boolean;
-}) {
-  const [expanded, setExpanded] = useState(true);
-  const m = PLATFORM_META.meta;
-  return (
-    <div className={`rounded-xl border transition-all ${ad.selected ? m.activeBorder : "border-orbi-border bg-orbi-surface/60"} ${regenerating ? "opacity-50 pointer-events-none" : ""}`}>
-      <div className="flex items-center gap-3 px-4 py-3 cursor-pointer" onClick={onToggle}>
-        <div className={`shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${ad.selected ? "border-purple-500 bg-purple-500" : "border-slate-600"}`}>
-          {ad.selected && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
-        </div>
-        <span className="text-lg">{ANGLE_ICONS[ad.angle]}</span>
-        <div className="flex-1 min-w-0">
-          <p className={`text-sm font-semibold truncate ${ad.selected ? "text-purple-300" : "text-foreground"}`}>{ad.angleLabel}</p>
-          <span className={`text-[10px] px-1.5 py-0.5 rounded ${m.badge}`}>{m.label}</span>
-        </div>
-        <div className="flex items-center gap-1 shrink-0">
-          {regenerating && <Loader2 className="w-3.5 h-3.5 text-purple-400 animate-spin" />}
-          <button onClick={(e) => { e.stopPropagation(); onRegenerate(); }} className="p-1 rounded text-orbi-secondary hover:text-purple-400 transition-colors" title="Regenerar">
-            <RefreshCw className="w-3.5 h-3.5" />
-          </button>
-          <button onClick={(e) => { e.stopPropagation(); setExpanded((v) => !v); }} className="text-orbi-muted hover:text-foreground/80 transition-colors">
-            {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
-        </div>
-      </div>
-      {expanded && (
-        <div className="px-4 pb-4 space-y-3 border-t border-orbi-border/60 pt-3">
-          {/* Primary text */}
-          <div>
-            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">Texto principal (máx. 125 car.)</p>
-            <div className="flex items-start gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-              <span className="flex-1 text-sm text-foreground/70 leading-relaxed">{ad.primaryText}</span>
-              <div className="flex items-start gap-1 shrink-0">
-                <CharBadge text={ad.primaryText ?? ""} limit={125} />
-                <CopyButton text={ad.primaryText ?? ""} />
-              </div>
-            </div>
-          </div>
-          {/* Headline */}
-          <div>
-            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">Headline (máx. 40 car.)</p>
-            <div className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-              <span className="flex-1 text-sm text-foreground/70 font-medium">{ad.headline}</span>
-              <CharBadge text={ad.headline ?? ""} limit={40} />
-              <CopyButton text={ad.headline ?? ""} />
-            </div>
-          </div>
-          {/* Description */}
-          <div>
-            <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">Descripción (máx. 30 car.)</p>
-            <div className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-              <span className="flex-1 text-sm text-foreground/80">{ad.description}</span>
-              <CharBadge text={ad.description ?? ""} limit={30} />
-              <CopyButton text={ad.description ?? ""} />
-            </div>
-          </div>
-          {/* CTA */}
-          {ad.cta && (
-            <div>
-              <p className="text-[10px] font-semibold text-orbi-muted uppercase tracking-widest mb-1.5">CTA recomendado</p>
-              <div className="flex items-center gap-2 bg-orbi-card/40 rounded-lg px-3 py-2">
-                <span className="flex-1 text-sm text-orbi-accent font-semibold">{ad.cta}</span>
-                <CopyButton text={ad.cta} />
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ─── Config field row ─── */
-function ConfigField({ label, value, note }: { label: string; value: string; note: string }) {
   return (
     <div className="flex flex-col gap-0.5 py-2.5 border-b border-orbi-border/40 last:border-0">
-      <span className="text-[10px] font-semibold text-orbi-muted uppercase tracking-wide">{label}</span>
+      <span className="text-[10px] font-semibold text-orbi-muted uppercase tracking-wide">{field.label}</span>
       <div className="flex items-start gap-2 mt-0.5">
-        <span className="flex-1 text-sm text-foreground leading-relaxed">{value}</span>
-        <CopyButton text={value} />
+        {editing ? (
+          <input
+            ref={inputRef}
+            value={draft}
+            onChange={e => setDraft(e.target.value)}
+            onBlur={commit}
+            onKeyDown={e => { if (e.key === "Enter") commit(); if (e.key === "Escape") { setDraft(field.value); setEditing(false); } }}
+            className="flex-1 bg-transparent text-sm text-foreground border-b border-orbi-accent outline-none py-0.5 leading-relaxed"
+          />
+        ) : (
+          <span
+            className="flex-1 text-sm text-foreground leading-relaxed cursor-text hover:text-foreground/80 transition-colors"
+            onClick={() => { setDraft(field.value); setEditing(true); }}
+            title="Clic para editar"
+          >
+            {field.value}
+          </span>
+        )}
+        <div className="flex items-center gap-0.5 shrink-0 mt-0.5">
+          <button
+            onClick={() => { setDraft(field.value); setEditing(v => !v); }}
+            className="p-1.5 rounded text-orbi-muted hover:text-foreground hover:bg-orbi-primary/20 transition-colors"
+            title="Editar"
+          >
+            <Pencil className="w-3 h-3" />
+          </button>
+          <CopyBtn text={field.value} />
+        </div>
       </div>
-      {note && (
-        <span className="text-[11px] text-orbi-muted/70 leading-snug mt-0.5">{note}</span>
+      {field.note && (
+        <span className="text-[11px] text-orbi-muted/70 leading-snug">{field.note}</span>
       )}
     </div>
   );
 }
 
-function ConfigBlock({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-xl border border-orbi-border bg-orbi-surface/60 overflow-hidden">
-      <div className="px-4 py-2.5 bg-orbi-card/60 border-b border-orbi-border">
-        <p className="text-[11px] font-bold text-orbi-secondary uppercase tracking-widest">{title}</p>
-      </div>
-      <div className="px-4 pb-1">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-/* ─── Section B — Meta Ads Config ─── */
-function MetaAdsConfigSection({
-  config,
-  generating,
-  onGenerate,
+/* ─── Collapsible config block ─── */
+function ConfigBlock({
+  title, icon: Icon, fields, onUpdate, onRegenerate, regenerating,
 }: {
-  config: MetaAdsConfig | null;
-  generating: boolean;
-  onGenerate: () => void;
+  title: string;
+  icon: React.ElementType;
+  fields: MetaField[];
+  onUpdate: (i: number, v: string) => void;
+  onRegenerate: () => void;
+  regenerating: boolean;
 }) {
-  if (generating) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12 gap-3">
-        <div className="relative">
-          <Settings2 className="w-8 h-8 text-slate-700" />
-          <div className="absolute -top-1 -right-1">
-            <Loader2 className="w-4 h-4 text-orbi-accent animate-spin" />
-          </div>
+  const [open, setOpen] = useState(true);
+
+  return (
+    <div className={`rounded-xl border border-orbi-border bg-orbi-surface/60 overflow-hidden transition-opacity ${regenerating ? "opacity-60 pointer-events-none" : ""}`}>
+      <div
+        className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-orbi-card/40 transition-colors"
+        onClick={() => setOpen(v => !v)}
+      >
+        <Icon className="w-4 h-4 text-orbi-accent shrink-0" />
+        <span className="flex-1 text-sm font-semibold text-foreground">{title}</span>
+        <div className="flex items-center gap-2">
+          {regenerating && <Loader2 className="w-3.5 h-3.5 animate-spin text-orbi-accent" />}
+          <button
+            onClick={e => { e.stopPropagation(); onRegenerate(); }}
+            className="flex items-center gap-1 text-[10px] px-2 py-1 rounded border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80 transition-colors"
+            title="Regenerar bloque"
+          >
+            <RefreshCw className="w-2.5 h-2.5" />
+            Regenerar
+          </button>
+          {open ? <ChevronUp className="w-4 h-4 text-orbi-muted" /> : <ChevronDown className="w-4 h-4 text-orbi-muted" />}
         </div>
-        <p className="text-sm text-foreground/70 font-medium text-center">Generando configuración de Meta Ads…</p>
-        <p className="text-xs text-orbi-muted text-center">Analizando audiencias y generando valores exactos para el Ads Manager</p>
-        <div className="w-full space-y-2 mt-2">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-14 rounded-xl border border-orbi-border bg-orbi-surface/40 animate-pulse" />
+      </div>
+      {open && (
+        <div className="px-4 pb-1 border-t border-orbi-border/60">
+          {fields.map((f, i) => (
+            <FieldRow key={i} field={f} onUpdate={v => onUpdate(i, v)} />
           ))}
         </div>
-      </div>
-    );
-  }
-
-  if (!config) {
-    return (
-      <div className="flex flex-col items-center gap-4 py-10 border border-dashed border-orbi-border rounded-xl">
-        <Settings2 className="w-8 h-8 text-orbi-muted" />
-        <div className="text-center">
-          <p className="text-sm font-medium text-foreground/80">Guía de configuración Meta Ads Manager</p>
-          <p className="text-xs text-orbi-muted mt-1 max-w-xs">
-            Genera valores exactos para cada campo del Ads Manager: campaña, conjunto de anuncios y anuncio.
-          </p>
-        </div>
-        <Button onClick={onGenerate} variant="primary">
-          <Sparkles className="w-4 h-4 mr-2" />
-          Generar configuración
-        </Button>
-      </div>
-    );
-  }
-
-  const c = config;
-
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <p className="text-xs text-orbi-muted">Valores listos para copiar directamente en Meta Ads Manager</p>
-        <button
-          onClick={onGenerate}
-          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80 transition-all"
-        >
-          <RefreshCw className="w-3 h-3" />
-          Regenerar
-        </button>
-      </div>
-
-      {/* Bloque 1 — Campaña */}
-      <ConfigBlock title="Bloque 1 — Campaña">
-        <ConfigField label="Nombre de la campaña" value={c.campaign.campaignName.value} note={c.campaign.campaignName.note} />
-        <ConfigField label="Objetivo" value={c.campaign.objective.value} note={c.campaign.objective.note} />
-        <ConfigField label="Categorías especiales" value={c.campaign.specialCategories.value} note={c.campaign.specialCategories.note} />
-      </ConfigBlock>
-
-      {/* Bloque 2 — Conjunto de anuncios */}
-      <ConfigBlock title="Bloque 2 — Conjunto de anuncios">
-        <ConfigField label="Destino de mensajes" value={c.adSet.messageDestination.value} note={c.adSet.messageDestination.note} />
-        <ConfigField label="País y ciudad (radio en km)" value={c.adSet.location.value} note={c.adSet.location.note} />
-        <ConfigField label="Edad recomendada" value={c.adSet.ageRange.value} note={c.adSet.ageRange.note} />
-        <ConfigField label="Sexo recomendado" value={c.adSet.gender.value} note={c.adSet.gender.note} />
-        <ConfigField label="Segmentación detallada" value={c.adSet.detailedTargeting.value} note={c.adSet.detailedTargeting.note} />
-        <ConfigField label="Idiomas" value={c.adSet.languages.value} note={c.adSet.languages.note} />
-        <ConfigField label="Presupuesto diario" value={c.adSet.dailyBudget.value} note={c.adSet.dailyBudget.note} />
-        <ConfigField label="Duración recomendada" value={c.adSet.duration.value} note={c.adSet.duration.note} />
-        <ConfigField label="Ubicaciones" value={c.adSet.placements.value} note={c.adSet.placements.note} />
-      </ConfigBlock>
-
-      {/* Bloque 3 — Anuncio */}
-      <ConfigBlock title="Bloque 3 — Anuncio">
-        <ConfigField label="Formato recomendado" value={c.ad.format.value} note={c.ad.format.note} />
-        <ConfigField label="Nombre del anunciante" value={c.ad.advertiserName.value} note={c.ad.advertiserName.note} />
-        <ConfigField label="Tipo de creative recomendado" value={c.ad.creativeDescription.value} note={c.ad.creativeDescription.note} />
-      </ConfigBlock>
+      )}
     </div>
   );
 }
 
-/* ─── Main form ─── */
+/* ─── Paso 1 — Objective card ─── */
+function ObjectiveCard({
+  config,
+  onConfirm,
+  onSwitch,
+  switching,
+}: {
+  config: MetaAdsFullConfig;
+  onConfirm: () => void;
+  onSwitch: (id: string) => void;
+  switching: boolean;
+}) {
+  const obj = config.objective;
+  const others = ALL_OBJECTIVES.filter(o => o.id !== obj.id);
+
+  return (
+    <div className="rounded-xl border border-orbi-accent/40 bg-orbi-primary/10 p-5">
+      <div className="flex items-center gap-2 mb-3">
+        <Target className="w-4 h-4 text-orbi-accent" />
+        <span className="text-xs font-bold text-orbi-accent uppercase tracking-widest">Objetivo recomendado</span>
+      </div>
+
+      <div className="flex items-start gap-3 mb-3">
+        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-orbi-accent/20 border border-orbi-accent/40 shrink-0 mt-0.5">
+          <Check className="w-3.5 h-3.5 text-orbi-accent" />
+        </div>
+        <div>
+          <p className="text-base font-bold text-foreground uppercase tracking-wide">{obj.label}</p>
+          <p className="text-sm text-orbi-muted mt-0.5 leading-relaxed">{obj.reason}</p>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2 mt-4">
+        <Button onClick={onConfirm} disabled={switching}>
+          <Check className="w-4 h-4 mr-1.5" />
+          Confirmar y ver configuración
+        </Button>
+
+        <div className="flex items-center gap-2 mt-1">
+          <span className="text-xs text-orbi-muted shrink-0">¿Prefieres otro?</span>
+          <div className="flex flex-wrap gap-1.5">
+            {others.map(o => (
+              <button
+                key={o.id}
+                disabled={switching}
+                onClick={() => onSwitch(o.id)}
+                className="text-xs px-2.5 py-1 rounded-full border border-orbi-border text-orbi-muted hover:border-orbi-accent/40 hover:text-foreground transition-colors disabled:opacity-50"
+              >
+                {switching ? <Loader2 className="w-3 h-3 animate-spin inline" /> : o.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Paso 3 — Summary card ─── */
+function SummaryCard({ config, onExport }: { config: MetaAdsFullConfig; onExport: () => void }) {
+  const s = config.summary;
+
+  function copyAll() {
+    const lines: string[] = [
+      "═══════════════════════════════════",
+      "       META ADS — CONFIGURACIÓN",
+      "═══════════════════════════════════\n",
+      "▶ OBJETIVO",
+      `  ${s.objective}\n`,
+      "── CAMPAÑA ──────────────────────",
+      ...config.campaign.map(f => `  ${f.label}: ${f.value}`),
+      "\n── CONJUNTO DE ANUNCIOS ─────────",
+      ...config.adSet.map(f => `  ${f.label}: ${f.value}`),
+      "\n── ANUNCIO ──────────────────────",
+      ...config.ad.map(f => `  ${f.label}: ${f.value}`),
+      "\n── RESUMEN ──────────────────────",
+      `  Objetivo:  ${s.objective}`,
+      `  Público:   ${s.audience}`,
+      `  Presupuesto: ${s.budget}`,
+      `  Formato:   ${s.format}`,
+      `  Alcance estimado: ${s.estimatedReach}`,
+    ];
+    navigator.clipboard.writeText(lines.join("\n"));
+  }
+
+  const rows = [
+    { label: "Objetivo", value: s.objective },
+    { label: "Público", value: s.audience },
+    { label: "Presupuesto", value: s.budget },
+    { label: "Formato", value: s.format },
+    { label: "Alcance estimado", value: s.estimatedReach },
+  ];
+
+  return (
+    <div className="rounded-xl border border-orbi-border bg-orbi-surface/60 p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <FileText className="w-4 h-4 text-orbi-accent" />
+        <span className="text-sm font-bold text-foreground">Tu campaña en Meta Ads</span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-2 mb-5">
+        {rows.map(r => (
+          <div key={r.label} className="flex items-start gap-2">
+            <span className="text-xs text-orbi-muted w-32 shrink-0 pt-0.5">{r.label}</span>
+            <span className="flex-1 text-sm font-medium text-foreground">{r.value}</span>
+            <CopyBtn text={r.value} />
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-2 pt-4 border-t border-orbi-border">
+        <button
+          onClick={copyAll}
+          className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground transition-colors"
+        >
+          <Copy className="w-3.5 h-3.5" />
+          Copiar todo
+        </button>
+        <button
+          onClick={onExport}
+          className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-orbi-accent/30 text-orbi-accent hover:bg-orbi-accent/10 transition-colors"
+        >
+          <FileText className="w-3.5 h-3.5" />
+          Exportar .txt
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────── main form ─────────────────────────────── */
+
+type Phase = "loading" | "objective" | "config";
+
 export default function AdGeneratorForm() {
   const router = useRouter();
   const { project, loading: projectLoading, error: projectError } = useActiveProject();
-  const [platform, setPlatform] = useState<AdPlatform>("meta");
-  const [ads, setAds] = useState<AdVariant[]>([]);
-  const [metaConfig, setMetaConfig] = useState<MetaAdsConfig | null>(null);
-  const [generating, setGenerating] = useState(false);
-  const [generatingConfig, setGeneratingConfig] = useState(false);
-  const [regeneratingId, setRegeneratingId] = useState<string | null>(null);
+  const [phase, setPhase] = useState<Phase>("loading");
+  const [config, setConfig] = useState<MetaAdsFullConfig | null>(null);
+  const [regeneratingBlock, setRegeneratingBlock] = useState<"campaign" | "adSet" | "ad" | null>(null);
+  const [switching, setSwitching] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const selectedAudiences = (project?.audiences ?? []).filter(
-    (a) => project?.selectedAudienceIds?.includes(a.id)
+    a => project?.selectedAudienceIds?.includes(a.id)
   );
   const selectedKeywords = (project?.keywords ?? [])
-    .flatMap((c) => c.keywords.filter((k) => k.selected).map((k) => k.phrase))
+    .flatMap(c => c.keywords.filter(k => k.selected).map(k => k.phrase))
     .slice(0, 10);
 
   useEffect(() => {
     if (projectLoading || !project) return;
-    if (!project.productBrief) { setError("Completa el Product Brief primero."); return; }
+    if (!project.productBrief) { setError("Completa el Product Brief primero."); setPhase("config"); return; }
 
-    const saved = (project.ads ?? []).filter((a) => a.platform === platform);
-    if (saved.length > 0) {
-      setAds(saved);
+    if (project.metaAdsConfig) {
+      setConfig(project.metaAdsConfig);
+      setPhase("config");
     } else {
-      generate(platform);
-    }
-
-    // Restore cached Meta config
-    if (platform === "meta" && project.metaAdsConfig) {
-      setMetaConfig(project.metaAdsConfig);
-    } else if (platform !== "meta") {
-      setMetaConfig(null);
+      generateAll();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project, projectLoading, platform]);
+  }, [project, projectLoading]);
 
-  async function generate(p: AdPlatform) {
+  async function generateAll(forcedObjective?: string) {
     if (!project?.productBrief) return;
-    setGenerating(true);
+    setPhase("loading");
     setError(null);
-    try {
-      const res = await fetch("/api/generate-ads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          brief: project.productBrief,
-          audiences: selectedAudiences,
-          keywords: selectedKeywords,
-          platform: p,
-        }),
-      });
-      const data = await res.json();
-      if (data.ads) {
-        setAds(data.ads);
-        const merged = [...(project.ads ?? []).filter(a => a.platform !== p), ...data.ads];
-        setActiveProject({ ...project, ads: merged });
-      } else {
-        setError(data.error ?? "No se pudieron generar los anuncios.");
-      }
-    } catch {
-      setError("Error de red al generar anuncios.");
-    } finally {
-      setGenerating(false);
-    }
-  }
-
-  async function generateConfig() {
-    if (!project?.productBrief) return;
-    setGeneratingConfig(true);
     try {
       const res = await fetch("/api/generate-meta-config", {
         method: "POST",
@@ -405,67 +308,130 @@ export default function AdGeneratorForm() {
           brief: project.productBrief,
           audiences: selectedAudiences,
           keywords: selectedKeywords,
+          ...(forcedObjective ? { forcedObjective } : {}),
         }),
       });
       const data = await res.json();
       if (data.config) {
-        setMetaConfig(data.config);
+        setConfig(data.config);
         setActiveProject({ ...project, metaAdsConfig: data.config });
+        setPhase("objective");
       } else {
         setError(data.error ?? "No se pudo generar la configuración.");
+        setPhase("config");
       }
     } catch {
       setError("Error de red al generar la configuración.");
-    } finally {
-      setGeneratingConfig(false);
+      setPhase("config");
     }
   }
 
-  async function regenerateOne(id: string) {
+  async function switchObjective(id: string) {
     if (!project?.productBrief) return;
-    setRegeneratingId(id);
+    setSwitching(true);
     try {
-      const res = await fetch("/api/generate-ads", {
+      const res = await fetch("/api/generate-meta-config", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           brief: project.productBrief,
           audiences: selectedAudiences,
           keywords: selectedKeywords,
-          platform,
+          forcedObjective: id,
         }),
       });
       const data = await res.json();
-      if (data.ads?.length) {
-        const replacement = data.ads[Math.floor(Math.random() * data.ads.length)];
-        replacement.id = Math.random().toString(36).slice(2, 10);
-        setAds((prev) => prev.map((a) => a.id === id ? replacement : a));
+      if (data.config) {
+        setConfig(data.config);
+        setActiveProject({ ...project, metaAdsConfig: data.config });
+      } else {
+        setError(data.error ?? "Error al cambiar objetivo.");
       }
-    } catch { /* silently keep existing */ }
-    finally { setRegeneratingId(null); }
+    } catch {
+      setError("Error de red.");
+    } finally {
+      setSwitching(false);
+    }
   }
 
-  function toggleAd(id: string) {
-    setAds((prev) => prev.map((a) => a.id === id ? { ...a, selected: !a.selected } : a));
+  async function regenerateBlock(block: "campaign" | "adSet" | "ad") {
+    if (!project?.productBrief || !config) return;
+    setRegeneratingBlock(block);
+    try {
+      const res = await fetch("/api/generate-meta-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          brief: project.productBrief,
+          audiences: selectedAudiences,
+          keywords: selectedKeywords,
+          forcedObjective: config.objective.id,
+        }),
+      });
+      const data = await res.json();
+      if (data.config) {
+        const updated: MetaAdsFullConfig = {
+          ...config,
+          [block]: data.config[block],
+          summary: data.config.summary,
+        };
+        setConfig(updated);
+        setActiveProject({ ...project, metaAdsConfig: updated });
+      }
+    } catch { /* keep existing */ }
+    finally { setRegeneratingBlock(null); }
   }
 
-  function switchPlatform(p: AdPlatform) {
-    setPlatform(p);
-    setAds([]);
-    if (p !== "meta") setMetaConfig(null);
+  function updateField(block: "campaign" | "adSet" | "ad", index: number, value: string) {
+    if (!config || !project) return;
+    const updated: MetaAdsFullConfig = {
+      ...config,
+      [block]: config[block].map((f, i) => i === index ? { ...f, value } : f),
+    };
+    setConfig(updated);
+    setActiveProject({ ...project, metaAdsConfig: updated });
   }
 
-  const selectedCount = ads.filter((a) => a.selected).length;
+  function exportTxt() {
+    if (!config) return;
+    const s = config.summary;
+    const lines = [
+      "META ADS — CONFIGURACIÓN COMPLETA",
+      "==================================\n",
+      `OBJETIVO: ${config.objective.label}`,
+      `Razón: ${config.objective.reason}\n`,
+      "BLOQUE 1 — CAMPAÑA",
+      "------------------",
+      ...config.campaign.map(f => `${f.label}: ${f.value}\n  → ${f.note}`),
+      "\nBLOQUE 2 — CONJUNTO DE ANUNCIOS",
+      "--------------------------------",
+      ...config.adSet.map(f => `${f.label}: ${f.value}\n  → ${f.note}`),
+      "\nBLOQUE 3 — ANUNCIO",
+      "------------------",
+      ...config.ad.map(f => `${f.label}: ${f.value}\n  → ${f.note}`),
+      "\nRESUMEN EJECUTIVO",
+      "-----------------",
+      `Objetivo:          ${s.objective}`,
+      `Público:           ${s.audience}`,
+      `Presupuesto:       ${s.budget}`,
+      `Formato:           ${s.format}`,
+      `Alcance estimado:  ${s.estimatedReach}`,
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `meta-ads-${config.objective.id}-${Date.now()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
   async function handleContinue() {
     if (!project) return;
     setSaving(true);
     try {
-      const otherPlatformAds = (project.ads ?? []).filter((a) => a.platform !== platform);
-      const allAds = [...otherPlatformAds, ...ads];
       const updated = {
         ...project,
-        ads: allAds,
         completedModules: (project.completedModules.includes("ad-generator")
           ? project.completedModules
           : [...project.completedModules, "ad-generator"]) as ModuleSlug[],
@@ -474,7 +440,6 @@ export default function AdGeneratorForm() {
       };
       setActiveProject(updated);
       try {
-        await saveAds(updated.id, allAds);
         await updateProjectProgress(updated.id, updated.completedModules, "post-generator");
       } catch (e) { console.error("Supabase sync failed:", e); }
       router.push(`/module/post-generator?pid=${updated.id}`);
@@ -484,8 +449,8 @@ export default function AdGeneratorForm() {
     }
   }
 
-  /* ── Loading state ── */
-  if (projectLoading || generating) {
+  /* ── Loading ── */
+  if (phase === "loading") {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4">
         <div className="relative">
@@ -495,148 +460,162 @@ export default function AdGeneratorForm() {
           </div>
         </div>
         <div className="text-center">
-          <p className="text-foreground/80 font-medium text-sm">
-            Generando copies para {platform === "google" ? "Google Ads" : "Meta Ads"}…
-          </p>
-          <p className="text-orbi-muted text-xs mt-1">5 ángulos × plataforma — 10–15 seg</p>
+          <p className="text-foreground/80 font-medium text-sm">Analizando tu producto y generando estrategia…</p>
+          <p className="text-orbi-muted text-xs mt-1">Objetivo · Campaña · Audiencia · Copy · Resumen — 15–25 seg</p>
         </div>
-        <div className="w-full space-y-3 mt-2">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-20 rounded-xl border border-orbi-border bg-orbi-surface/40 animate-pulse" />
+        <div className="w-full space-y-2 mt-2">
+          {["Analizando producto y audiencias…", "Seleccionando objetivo óptimo…", "Configurando bloques del Ads Manager…", "Generando copy y resumen…"].map((t, i) => (
+            <div key={i} className="h-10 rounded-lg border border-orbi-border bg-orbi-surface/40 animate-pulse flex items-center px-4">
+              <span className="text-xs text-orbi-muted/50">{t}</span>
+            </div>
           ))}
         </div>
       </div>
     );
   }
 
+  /* ── Error ── */
   const displayError = projectError || error;
-  if (displayError) {
+  if (displayError && !config) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
         <AlertCircle className="w-8 h-8 text-rose-500" />
         <p className="text-foreground/80 text-sm">{displayError}</p>
-        <Button onClick={() => router.push("/dashboard")} size="sm">Volver al dashboard</Button>
+        <div className="flex gap-2">
+          <Button onClick={() => generateAll()} variant="primary">
+            <RefreshCw className="w-4 h-4 mr-1.5" />
+            Reintentar
+          </Button>
+          <Button onClick={() => router.push("/dashboard")} variant="secondary" size="sm">
+            Volver al dashboard
+          </Button>
+        </div>
       </div>
     );
   }
 
+  if (!config) return null;
+
   return (
-    <div className="flex flex-col gap-6">
-      {/* Platform switcher */}
-      <div className="flex flex-wrap items-center gap-2">
-        <p className="text-xs text-orbi-muted shrink-0">Plataforma:</p>
-        <div className="flex gap-2 flex-wrap">
-          {(["meta", "google"] as AdPlatform[]).map((p) => {
-            const m = PLATFORM_META[p];
-            const active = platform === p;
-            return (
-              <button
-                key={p}
-                onClick={() => switchPlatform(p)}
-                className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition-all ${
-                  active ? `${m.bg} ${m.border} ${m.color}` : "border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80"
-                }`}
-              >
-                {m.label}
-              </button>
-            );
-          })}
-          <button
-            onClick={() => generate(platform)}
-            className="text-xs px-3 py-1.5 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80 transition-all flex items-center gap-1.5"
-          >
-            <RefreshCw className="w-3 h-3" />
-            Regenerar todo
-          </button>
+    <div className="flex flex-col gap-5">
+      {/* Top bar */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-orbi-accent" />
+          <span className="text-sm font-semibold text-foreground">Meta Ads — Configuración completa</span>
         </div>
-        <div className="ml-auto shrink-0 text-right">
-          <span className="text-2xl font-bold text-foreground">{selectedCount}</span>
-          <p className="text-[10px] text-orbi-secondary mt-0.5">seleccionados</p>
-        </div>
+        <button
+          onClick={() => generateAll()}
+          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80 transition-all"
+        >
+          <RefreshCw className="w-3 h-3" />
+          Regenerar todo
+        </button>
       </div>
 
-      {/* ──────────────────── SECCIÓN A — Copy ──────────────────── */}
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-orbi-accent uppercase tracking-widest">Sección A</span>
-            <span className="text-xs text-orbi-muted">— Copy del anuncio</span>
-          </div>
-          <div className="flex-1 h-px bg-orbi-border" />
+      {/* Error banner (non-fatal) */}
+      {displayError && (
+        <div className="text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">
+          {displayError}
         </div>
+      )}
 
-        <p className="text-sm text-orbi-muted leading-relaxed -mt-1">
-          Selecciona los anuncios que quieres guardar. Cada ícono representa un{" "}
-          <strong className="text-foreground">ángulo de persuasión</strong> distinto.
-        </p>
-
-        {/* Angle legend */}
-        <div className="flex flex-wrap gap-2">
-          {Object.entries(ANGLE_ICONS).map(([key, icon]) => (
-            <span key={key} className="text-[11px] px-2 py-1 rounded-full bg-orbi-card text-orbi-muted border border-orbi-border-light">
-              {icon} {key === "pain" ? "Dolor" : key === "outcome" ? "Resultado" : key === "social_proof" ? "Prueba social" : key === "curiosity" ? "Curiosidad" : "Urgencia"}
-            </span>
-          ))}
-        </div>
-
-        {/* Ad cards */}
-        <div className="space-y-3">
-          {ads.map((ad) =>
-            ad.platform === "google" ? (
-              <GoogleAdCard
-                key={ad.id}
-                ad={ad}
-                onToggle={() => toggleAd(ad.id)}
-                onRegenerate={() => regenerateOne(ad.id)}
-                regenerating={regeneratingId === ad.id}
-              />
-            ) : (
-              <MetaAdCard
-                key={ad.id}
-                ad={ad}
-                onToggle={() => toggleAd(ad.id)}
-                onRegenerate={() => regenerateOne(ad.id)}
-                regenerating={regeneratingId === ad.id}
-              />
-            )
-          )}
-        </div>
-      </div>
-
-      {/* ──────────────────── SECCIÓN B — Meta Config (solo Meta) ──────────────────── */}
-      {platform === "meta" && (
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-orbi-accent uppercase tracking-widest">Sección B</span>
-              <span className="text-xs text-orbi-muted">— Configuración Meta Ads Manager</span>
+      {/* ── PASO 1 — Objetivo ── */}
+      <div className="flex flex-col gap-3">
+        <SectionHeader step="1" title="Objetivo de la campaña" />
+        {phase === "objective" ? (
+          <ObjectiveCard
+            config={config}
+            onConfirm={() => setPhase("config")}
+            onSwitch={switchObjective}
+            switching={switching}
+          />
+        ) : (
+          /* Confirmed state — compact chip */
+          <div className="flex items-center gap-3 rounded-xl border border-orbi-border bg-orbi-surface/60 px-4 py-3">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-orbi-accent/20 shrink-0">
+              <Check className="w-3.5 h-3.5 text-orbi-accent" />
             </div>
-            <div className="flex-1 h-px bg-orbi-border" />
+            <div className="flex-1 min-w-0">
+              <span className="text-sm font-bold text-foreground uppercase tracking-wide">{config.objective.label}</span>
+              <span className="text-xs text-orbi-muted ml-2">— {config.objective.reason}</span>
+            </div>
+            <button
+              onClick={() => setPhase("objective")}
+              className="text-[10px] px-2 py-1 rounded border border-orbi-border text-orbi-muted hover:border-orbi-border-light hover:text-foreground/80 transition-colors shrink-0"
+            >
+              Cambiar
+            </button>
           </div>
+        )}
+      </div>
 
-          <MetaAdsConfigSection
-            config={metaConfig}
-            generating={generatingConfig}
-            onGenerate={generateConfig}
+      {/* ── PASO 2 — Bloques (only after confirming objective) ── */}
+      {phase === "config" && (
+        <div className="flex flex-col gap-3">
+          <SectionHeader step="2" title="Configuración en Meta Ads Manager" />
+
+          <ConfigBlock
+            title="Bloque 1 — Campaña"
+            icon={Target}
+            fields={config.campaign}
+            onUpdate={(i, v) => updateField("campaign", i, v)}
+            onRegenerate={() => regenerateBlock("campaign")}
+            regenerating={regeneratingBlock === "campaign"}
+          />
+          <ConfigBlock
+            title="Bloque 2 — Conjunto de anuncios"
+            icon={Settings2}
+            fields={config.adSet}
+            onUpdate={(i, v) => updateField("adSet", i, v)}
+            onRegenerate={() => regenerateBlock("adSet")}
+            regenerating={regeneratingBlock === "adSet"}
+          />
+          <ConfigBlock
+            title="Bloque 3 — Anuncio"
+            icon={Megaphone}
+            fields={config.ad}
+            onUpdate={(i, v) => updateField("ad", i, v)}
+            onRegenerate={() => regenerateBlock("ad")}
+            regenerating={regeneratingBlock === "ad"}
           />
         </div>
       )}
 
+      {/* ── PASO 3 — Resumen (only after confirming objective) ── */}
+      {phase === "config" && (
+        <div className="flex flex-col gap-3">
+          <SectionHeader step="3" title="Resumen ejecutivo" />
+          <SummaryCard config={config} onExport={exportTxt} />
+        </div>
+      )}
+
       {/* Footer */}
-      <div className="flex items-center justify-between pt-2 border-t border-orbi-border">
-        <p className="text-sm text-orbi-muted">
-          {selectedCount === 0
-            ? "Selecciona al menos un anuncio para continuar"
-            : `${selectedCount} anuncio${selectedCount !== 1 ? "s" : ""} seleccionado${selectedCount !== 1 ? "s" : ""}`}
-        </p>
-        <Button size="lg" disabled={saving} onClick={handleContinue}>
-          {saving ? (
-            <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Guardando...</>
-          ) : (
-            <>Continuar a Posts<ArrowRight className="ml-2 w-4 h-4" /></>
-          )}
-        </Button>
+      {phase === "config" && (
+        <div className="flex items-center justify-between pt-2 border-t border-orbi-border">
+          <p className="text-sm text-orbi-muted">Configuración lista — continúa al módulo de Posts</p>
+          <Button size="lg" disabled={saving} onClick={handleContinue}>
+            {saving
+              ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Guardando...</>
+              : <>Continuar a Posts<ArrowRight className="ml-2 w-4 h-4" /></>}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SectionHeader({ step, title }: { step: string; title: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 shrink-0">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-orbi-primary text-[10px] font-bold text-orbi-accent border border-orbi-accent/30">
+          {step}
+        </span>
+        <span className="text-xs font-bold text-orbi-accent uppercase tracking-widest">Paso {step}</span>
+        <span className="text-xs text-orbi-muted">— {title}</span>
       </div>
+      <div className="flex-1 h-px bg-orbi-border" />
     </div>
   );
 }
